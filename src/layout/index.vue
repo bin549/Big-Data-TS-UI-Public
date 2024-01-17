@@ -135,9 +135,6 @@ const layoutHeader = defineComponent({
       {
         default: () => [
           !pureSetting.hiddenSideBar &&
-          (layout.value.includes("vertical") || layout.value.includes("mix"))
-            ? h(navbar)
-            : null,
           !pureSetting.hiddenSideBar && layout.value.includes("horizontal")
             ? h(Horizontal)
             : null,
@@ -175,7 +172,7 @@ const layoutHeader = defineComponent({
       <div v-if="set.fixedHeader">
         <layout-header />
         <!-- 主体内容 -->
-        <app-main :fixed-header="set.fixedHeader" />
+        <app-main :fixed-header="set.fixedHeader" style="margin-top: -70px;margin-left: -30px;"/>
       </div>
       <el-scrollbar v-else>
         <el-backtop
