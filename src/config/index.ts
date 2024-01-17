@@ -26,7 +26,6 @@ const getConfig = (key?: string): ServerConfigs => {
   return config;
 };
 
-/** 获取项目动态全局配置 */
 export const getServerConfig = async (app: App): Promise<undefined> => {
   app.config.globalProperties.$config = getConfig();
   return axios({
@@ -35,11 +34,9 @@ export const getServerConfig = async (app: App): Promise<undefined> => {
   })
     .then(({ data: config }) => {
       let $config = app.config.globalProperties.$config;
-      // 自动注入项目配置
       if (app && $config && typeof config === "object") {
         $config = Object.assign($config, config);
         app.config.globalProperties.$config = $config;
-        // 设置全局配置
         setConfig($config);
       }
       return $config;

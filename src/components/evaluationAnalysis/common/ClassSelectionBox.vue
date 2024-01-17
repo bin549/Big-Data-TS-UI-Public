@@ -58,7 +58,7 @@ defineExpose({
 
 <template>
   <div mt--3>
-    <h4 font-bold pl-3 content-center text-lg text-gray-500>学生选择</h4>
+    <h4 style="background-color: #90e0ef; color: white;" font-bold pl-3 content-center text-lg text-gray-500>班级选择</h4>
     <el-row>
       <el-col :xs="8" :lg="8" :xl="8">
         <el-form>

@@ -39,8 +39,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h4 bg-white font-bold p-3 content-center text-lg text-gray-500 p-4>学期选择</h4>
-  <div bg-white flex flex-justify-center rounded-md b-rounded-2 >
+  <h4 style="background-color: #90e0ef;  color: white;" font-bold p-3 content-center text-lg text-gray-500 p-4>学期选择</h4>
+  <div style="background-color: #caf0f8; padding: 60px; color: white;" flex flex-justify-center rounded-md b-rounded-2 >
     <el-checkbox-group @change="changeSelectedTerms" v-model="selectedTerms">
       <el-checkbox :key="term.key" :label="term.label" v-for="term in all_terms"
                    :disabled="!terms.map(term => term.key).includes(term.key)"/>

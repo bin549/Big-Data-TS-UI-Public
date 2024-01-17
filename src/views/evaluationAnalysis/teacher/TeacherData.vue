@@ -10,6 +10,7 @@ const teachers = ref<any>([])
 
 async function handleChangeSelectedSchoolId(schoolId) {
   isLoading.value = true
+  teachers.value = []
   const res = await getTeacherList({
     school_id: schoolId
   })

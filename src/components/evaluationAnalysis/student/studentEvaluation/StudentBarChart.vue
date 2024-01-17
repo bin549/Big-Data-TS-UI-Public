@@ -63,8 +63,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div bg-white b-rounded-2 mt-2 mb-2 h-140>
-    <h4 font-bold p-3 content-center text-lg text-gray-500>评语统计柱状图</h4>
+  <div style="background-color: #caf0f8;" b-rounded-2 mt-2 mb-2 h-140>
+    <h4 style="background-color: #90e0ef; color: white;" font-bold p-3 content-center text-lg text-gray-500>评语统计柱状图</h4>
     <div id="bar-chart" w-full h-full/>
   </div>
 </template>
