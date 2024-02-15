@@ -43,7 +43,7 @@ const emits = defineEmits(["setPageState"])
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   text-align: center;
   overflow: hidden;
-  background-color: #caf0f8;
+  background-color: #eefcff;
 }
 
 .index-card-item-img {
