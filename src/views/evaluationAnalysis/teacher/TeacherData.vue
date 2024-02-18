@@ -35,9 +35,9 @@ function handleChangeSelectedStudentId(studentId) {
 </script>
 
 <template>
-  <div class="content" flex flex-col flex-items-center>
+  <div style="background-color: #def6ff" class="content" flex flex-col flex-items-center>
     <el-divider/>
-    <div bg-white w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
+    <div style="background-color: #def6ff"  w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
       <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId"/>
     </div>
     <el-divider/>
@@ -46,7 +46,7 @@ function handleChangeSelectedStudentId(studentId) {
       :data="teachers"
       highlight-current-row
       v-loading="isLoading"
-      style="width: 100%"
+      style="background-color: #def6ff; width: 100%" 
     >
       <el-table-column type="index" width="50"/>
       <el-table-column property="name" label="姓名" width="120"/>

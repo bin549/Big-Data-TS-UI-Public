@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getStudentEvaluation} from "@/api/base.ts"
+import { getStudentEvaluation } from "@/api/base.ts"
 
 const props = defineProps({
   selectedStudentId: String,
@@ -7,9 +7,6 @@ const props = defineProps({
 })
 
 async function refresh() {
-  console.log(props.selectedTerms)
-  console.log(props.selectedTerms)
-  console.log(props.selectedTerms)
   await getStudentEvaluation({
     student_id: props.selectedStudentId,
     term_id: 14
@@ -24,8 +21,8 @@ defineExpose({
 </script>
 
 <template>
-  <div style="background-color: #caf0f8;" rounded-md>
-    <h4 style="background-color: #90e0ef; color: white;" font-bold p-3 content-center text-lg text-gray-500>数据统计</h4>
+  <div style="background-color: #def6ff;" rounded-md>
+    <h4 style="background-color: #def6ff; color: white;" font-bold p-3 content-center text-lg text-gray-500>数据统计</h4>
     <div h-full>
       <el-row>
         <el-col :span="4" b-white b-1>
@@ -34,7 +31,7 @@ defineExpose({
           </div>
         </el-col>
         <el-col :span="8" b-white b-1>
-          <div class="grid-content ep-bg-purple-light"/>
+          <div class="grid-content ep-bg-purple-light" />
           14
         </el-col>
         <el-col :span="4" b-white b-1>
@@ -43,7 +40,7 @@ defineExpose({
           </div>
         </el-col>
         <el-col :span="8" b-white b-1>
-          <div class="grid-content ep-bg-purple"/>
+          <div class="grid-content ep-bg-purple" />
           4
         </el-col>
       </el-row>
@@ -54,15 +51,15 @@ defineExpose({
           </div>
         </el-col>
         <el-col :span="8" b-white b-1>
-          <div class="grid-content ep-bg-purple-light"/>
+          <div class="grid-content ep-bg-purple-light" />
           13 / 92.86%
         </el-col>
         <el-col :span="4" b-white b-1>
-          <div class="grid-content ep-bg-purple"/>
+          <div class="grid-content ep-bg-purple" />
           负面评价
         </el-col>
         <el-col :span="8" b-white b-1>
-          <div class="grid-content ep-bg-purple"/>
+          <div class="grid-content ep-bg-purple" />
           1 / 7.14%
         </el-col>
       </el-row>
@@ -94,6 +91,4 @@ defineExpose({
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

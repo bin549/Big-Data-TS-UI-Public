@@ -3,12 +3,11 @@
 </script>
 
 <template>
-  <div rounded-md b-rounded-2 style="height: 25" bg-white>
+  <div style="background-color: #def6ff" rounded-md b-rounded-2>
     <h4 font-bold pl-3 content-center text-lg text-gray-500 mt-4>数据统计</h4>
     <div h-full>
       <el-row>
         <el-col :span="4" b-gray b-1>
-          <h4 bg-white font-bold pl-3 content-center text-lg text-gray-500 mt-4>数据统计</h4>
           <div content-center style="font-size: 14px;">
             评价总数
           </div>

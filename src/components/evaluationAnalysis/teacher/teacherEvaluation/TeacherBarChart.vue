@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
+import { onMounted } from "vue";
 import * as echarts from "echarts";
 
 var option = {
@@ -63,12 +63,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div bg-white rounded-md b-rounded-2 mt-2 mb-2 h-140>
+  <div style="background-color: #def6ff" rounded-md b-rounded-2 mt-2 mb-2 h-140>
     <h4 font-bold p-3 content-center text-lg text-gray-500>评语统计柱状图</h4>
     <div id="bar-chart" w-full h-full></div>
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

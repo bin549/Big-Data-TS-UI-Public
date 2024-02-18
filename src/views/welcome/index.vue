@@ -67,7 +67,7 @@ onMounted(() => {
 
 <template>
   <!--  <BookLoader v-if="isLoading"/>-->
-  <div style="background-color: #def6ff;" w-full h-full absolute>
+  <div style="background-color: #f2fafe;" w-full h-full absolute>
     <div>
       <el-button @click="setPageState(submodule.index)">概览</el-button>
       <el-button @click="setPageState(submodule.teacher_evaluation)" v-if="isTeacherRank">教师评价</el-button>

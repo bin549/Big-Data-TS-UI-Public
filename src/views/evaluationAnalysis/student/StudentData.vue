@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import {ref} from "vue"
-import {getStudentList} from "@/api/base"
+import { ref } from "vue"
+import { getStudentList } from "@/api/base"
 
 import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue";
 import ClassSelectionBox from "@/components/evaluationAnalysis/common/ClassSelectionBox.vue";
+import BaseSpinner from "@/components/evaluationAnalysis/utils/BaseSpinner.vue";
+import StudentAvatarCard from "@/components/evaluationAnalysis/student/studentEvaluation/StudentAvatarCard.vue";
 
 type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
 const classSelectionBox = ref<null | classSelectionBoxCtx>(null)
@@ -32,54 +34,67 @@ async function handleChangeSelectedClassId(classId) {
   await getStudentList({
     class_id: classId
   }).then((res: any) => {
-    students.value = res.data.map(({id, name}: any) => ({
+    students.value = res.data.map(({ id, name, sex }: any) => ({
       id: id,
       name: name,
+      sex: sex,
     }))
   })
   isLoading.value = false
 }
 
 function checkEvaluationData(index) {
-  emits("checkStudentEvaluation")
+  emits("checkStudentEvaluation", index)
 }
 </script>
 
 <template>
   <div class="content" flex flex-col flex-items-center>
-    <el-divider/>
-    <div bg-white w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
-      <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId"/>
-      <el-divider/>
-      <ClassSelectionBox ref="classSelectionBox" @changeSelectedClassId="handleChangeSelectedClassId" :selectedSchoolId="selectedSchoolId"/>
+    <el-divider />
+    <div style="background-color: #def6ff" w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
+      <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId" />
+      <el-divider />
+      <ClassSelectionBox ref="classSelectionBox" @changeSelectedClassId="handleChangeSelectedClassId"
+        :selectedSchoolId="selectedSchoolId" />
     </div>
-    <el-divider/>
-    <el-table
-      ref="singleTableRef"
-      :data="students"
-      highlight-current-row
-      v-loading="isLoading"
-      style="width: 100%"
-    >
-      <el-table-column type="index" width="50"/>
-      <el-table-column property="name" label="姓名" width="120"/>
-      <el-table-column fixed="right" label="操作" width="120">
-        <template #default="scope">
-          <el-button
-            link
-            type="primary"
-            size="small"
-            @click.prevent="checkEvaluationData(scope.$index)"
-          >
-            查看评价信息
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-divider />
+    <div class="avatar-avatar-container justify-center items-center flex; ">
+      <BaseSpinner v-if="isLoading"/>
+      <el-row style="width: 95%; left: 2%;" class="absolute;" v-else>
+        <el-col class="flex" :xs="8" :sm="6" :md="4" :lg="3" :xl="1" v-for="(student, index) in students"
+          style=" padding: 5px;"
+          @click="checkEvaluationData(index)">
+          <StudentAvatarCard :sex="student.sex" :name="student.name" />
+        </el-col>
+      </el-row>
+    </div>
   </div>
-
 </template>
 
 <style scoped lang="scss">
+.avatar-avatar-container {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 50vh;
+  width: 95%;
+}
 
-</style>
+.avatar-container::-webkit-scrollbar {
+  width: 10px;
+  /* 设置滚动条的宽度 */
+}
+
+.avatar-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  /* 设置滚动条的背景颜色 */
+}
+
+.avatar-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  /* 设置滚动条的滑块颜色 */
+}
+
+.avatar-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  /* 设置鼠标悬停时滚动条滑块的颜色 */
+}</style>

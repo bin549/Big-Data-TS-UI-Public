@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import {getClassList, getGradeList, getStudentList} from "@/api/base.ts";
+import { onMounted, ref } from "vue";
+import { getClassList, getGradeList, getStudentList } from "@/api/base.ts";
 
 const selectedGradeId = ref<number>();
 const selectedStudentId = ref<number>(0);
@@ -28,7 +28,7 @@ async function refresh() {
     school_id: props.selectedSchoolId,
     grade_id: selectedGradeId.value
   }).then((res: any) => {
-    classes.value = res.data.map(({classId, className}: any) => ({
+    classes.value = res.data.map(({ classId, className }: any) => ({
       id: classId,
       name: className,
     }))
@@ -50,7 +50,7 @@ async function getStudents() {
   await getStudentList({
     class_id: selectedClassId.value
   }).then((res: any) => {
-    students.value = res.data.map(({id, name}: any) => ({
+    students.value = res.data.map(({ id, name }: any) => ({
       id: id,
       name: name,
     }))
@@ -70,7 +70,7 @@ function reset() {
   selectedStudentId.value = null
 }
 
-onMounted(async () => {
+onMounted(async () => { 
   await getGrades();
 })
 
@@ -81,19 +81,14 @@ defineExpose({
 </script>
 
 <template>
-  <div style="background-color: #caf0f8" mt--3>
+  <div style="background-color: #def6ff" mt--3>
     <h4 font-bold pl-3 content-center text-lg text-gray-500>学生选择</h4>
     <el-row>
       <el-col :xs="8" :lg="8" :xl="8">
         <el-form>
           <el-form-item label-width="100px" label="年级:">
             <el-select @change="refresh" v-model="selectedGradeId" placeholder="请选择年级">
-              <el-option
-                v-for="grade in grades"
-                :key="grade.id"
-                :label="grade.name"
-                :value="grade.id"
-              />
+              <el-option v-for="grade in grades" :key="grade.id" :label="grade.name" :value="grade.id" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -102,12 +97,7 @@ defineExpose({
         <el-form>
           <el-form-item label-width="100px" label="班级:">
             <el-select @change="getStudents" v-model="selectedClassId" placeholder="请选择班级">
-              <el-option
-                v-for="cls in classes"
-                :key="cls.id"
-                :label="cls.name"
-                :value="cls.id"
-              />
+              <el-option v-for="cls in classes" :key="cls.id" :label="cls.name" :value="cls.id" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -116,12 +106,7 @@ defineExpose({
         <el-form>
           <el-form-item label-width="100px" label="学生:">
             <el-select @change="changeSelectedStudentId" v-model="selectedStudentId" placeholder="请选择学生">
-              <el-option
-                v-for="student in students"
-                :key="student.id"
-                :label="student.name"
-                :value="student.id"
-              />
+              <el-option v-for="student in students" :key="student.id" :label="student.name" :value="student.id" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -130,6 +115,4 @@ defineExpose({
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

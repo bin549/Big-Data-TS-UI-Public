@@ -54,7 +54,7 @@ function handleSetupTerm(gradeId) {
 <template>
   <div class="content" flex flex-col flex-items-center>
     <el-divider/>
-    <div bg-white w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
+    <div style="background-color: #def6ff" w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
       <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId"/>
       <el-divider/>
       <StudentSelectionBox ref="studentSelectionBox" :selectedSchoolId="selectedSchoolId"
