@@ -28,7 +28,7 @@ function handleChangeSelectedSchoolId(schoolId) {
 <template>
   <div class="content" flex flex-col flex-items-center>
     <el-divider/>
-    <div bg-white w-full h-25 class="nav-bar" flex flex-col gap-y-0>
+    <div style="background-color: #def6ff;" w-full h-25 class="nav-bar" flex flex-col gap-y-0>
       <div>
         <SchoolSelectionBox @changeSelectedSchoolId="handleChangeSelectedSchoolId"/>
       </div>

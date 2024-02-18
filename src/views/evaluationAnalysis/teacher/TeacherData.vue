@@ -3,9 +3,11 @@ import {ref} from "vue"
 import {getTeacherList} from "@/api/base"
 
 import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue";
+import StudentAvatarCard from "@/components/evaluationAnalysis/student/studentEvaluation/StudentAvatarCard.vue";
+import BaseSpinner from "@/components/evaluationAnalysis/utils/BaseSpinner.vue";
 
 const selectedSchoolId = ref<number>();
-const isLoading = ref<boolean>(false)
+const isLoading = ref<boolean>(true)
 const teachers = ref<any>([])
 
 async function handleChangeSelectedSchoolId(schoolId) {
@@ -41,20 +43,46 @@ function handleChangeSelectedStudentId(studentId) {
       <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId"/>
     </div>
     <el-divider/>
-    <el-table
-      ref="singleTableRef"
-      :data="teachers"
-      highlight-current-row
-      v-loading="isLoading"
-      style="background-color: #def6ff; width: 100%" 
-    >
-      <el-table-column type="index" width="50"/>
-      <el-table-column property="name" label="姓名" width="120"/>
-    </el-table>
+    <div class="avatar-avatar-container justify-center items-center flex; ">
+      <BaseSpinner v-if="isLoading"/>
+      <el-row style="width: 95%; left: 2%;" class="absolute;" v-else>
+        <el-col class="flex" :xs="8" :sm="6" :md="4" :lg="3" :xl="1" v-for="(teacher, index) in teachers"
+          style=" padding: 5px;">
+          <StudentAvatarCard :sex="'男'" :name="teacher.name" />
+        </el-col>
+      </el-row>
+    </div>
+
   </div>
 
 </template>
 
 <style scoped lang="scss">
 
+.avatar-avatar-container {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 70vh;
+  width: 95%;
+}
+
+.avatar-container::-webkit-scrollbar {
+  width: 10px;
+  /* 设置滚动条的宽度 */
+}
+
+.avatar-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  /* 设置滚动条的背景颜色 */
+}
+
+.avatar-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  /* 设置滚动条的滑块颜色 */
+}
+
+.avatar-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  /* 设置鼠标悬停时滚动条滑块的颜色 */
+}
 </style>

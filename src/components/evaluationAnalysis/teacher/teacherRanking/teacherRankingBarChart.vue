@@ -64,7 +64,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div b-rounded-2 h-200 flex flex-col bg-white>
+  <div b-rounded-2 h-200 flex flex-col style="background-color: #def6ff;">
     <div b-rounded-2 style="height: 100%">
       <h4 bg-white font-bold pl-3 content-center text-lg text-gray-500 mt-4 p-4>评价数量</h4>
       <div id="bar-chart" w-full h-full></div>

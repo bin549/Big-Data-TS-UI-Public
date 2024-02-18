@@ -34,8 +34,8 @@ defineExpose({
 
 <template>
   {{subjects}}
-  <h4 bg-white font-bold p-3 content-center text-lg text-gray-500 p-4>科目选择</h4>
-  <div bg-white flex flex-justify-center rounded-md b-rounded-2>
+  <h4 style="background-color: #def6ff;" font-bold p-3 content-center text-lg text-gray-500 p-4>科目选择</h4>
+  <div style="background-color: #def6ff;" flex flex-justify-center rounded-md b-rounded-2>
     <el-checkbox-group @change="getSubjects" v-model="selectedSubjects">
       <el-checkbox :key="subject.key" :label="subject.label" v-for="subject in subjects"/>
     </el-checkbox-group>

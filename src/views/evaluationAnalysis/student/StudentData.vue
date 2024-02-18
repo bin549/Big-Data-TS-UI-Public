@@ -13,7 +13,7 @@ const classSelectionBox = ref<null | classSelectionBoxCtx>(null)
 const selectedSchoolId = ref<number>();
 const emits = defineEmits(["checkStudentEvaluation"])
 const students = ref<any>([])
-const isLoading = ref<boolean>(false)
+const isLoading = ref<boolean>(true)
 
 
 function handleChangeSelectedSchoolId(schoolId) {
@@ -97,4 +97,5 @@ function checkEvaluationData(index) {
 .avatar-container::-webkit-scrollbar-thumb:hover {
   background-color: #555;
   /* 设置鼠标悬停时滚动条滑块的颜色 */
-}</style>
+}
+</style>
