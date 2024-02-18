@@ -81,8 +81,8 @@ defineExpose({
 </script>
 
 <template>
-  <div style="background-color: #def6ff" mt--3>
-    <h4 font-bold pl-3 content-center text-lg text-gray-500>学生选择</h4>
+  <div style="background-color: #def6ff">
+    <h4 style="background-color: #c7f4ff;  color: white;" font-bold pl-3 content-center text-lg>学生选择</h4>
     <el-row>
       <el-col :xs="8" :lg="8" :xl="8">
         <el-form>

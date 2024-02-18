@@ -6,11 +6,13 @@ import TermSelectionBox from "@/components/evaluationAnalysis/common/TermSelecti
 import SubjectSelectionBox from "@/components/evaluationAnalysis/common/SubjectSelectionBox.vue";
 import StudentStatisticsChart from "@/components/evaluationAnalysis/student/studentEvaluation/StudentStatisticsChart.vue";
 import StudentBarChart from "@/components/evaluationAnalysis/student/studentEvaluation/StudentBarChart.vue";
+import { getStudentEvaluation } from "@/api/base.ts"
 
 const selectedSchoolId = ref<number>();
-const selectedStudentId = ref<number>(1);
-const selectedTerms = ref<any>([1]);
-const selectedSubjects = ref<any>([1]);
+const selectedStudentId = ref<string>("");
+const selectedTerms = ref<any>([]);
+const selectedSubjects = ref<any>([]);
+const selectedStudentEvaluations = ref<any>([]);
 type studentSelectionBoxCtx = InstanceType<typeof StudentSelectionBox>
 const studentSelectionBox = ref<null | studentSelectionBoxCtx>(null)
 type subjectSelectionBoxCtx = InstanceType<typeof SubjectSelectionBox>
@@ -24,26 +26,45 @@ function handleChangeSelectedSchoolId(schoolId) {
   selectedSchoolId.value = schoolId
   setTimeout(() => {
     studentSelectionBox.value?.changeGradeId();
+    termSelectionBox.value?.getTerms()
+    subjectSelectionBox.value?.getSubjects();
   }, 100)
-  // subjectSelectionBox.value?.getSubjects();
 }
 
 function handleReset() {
   studentSelectionBox.value?.reset()
 }
-
+ 
 function handleChangeSelectedTerms(terms) {
   selectedTerms.value = terms
   studentStatisticsChart.value?.refresh()
+  fetchData()
 }
 
 function handleChangeSelectedSubjects(subjects) {
   selectedSubjects.value = subjects
+  fetchData()
 }
 
 function handleChangeSelectedStudentId(studentId) {
   selectedStudentId.value = studentId
-  studentStatisticsChart.value?.refresh()
+  fetchData()
+  setTimeout(() => {
+    studentStatisticsChart.value?.refresh()
+  },300)
+}
+
+async function fetchData() {
+  if (selectedTerms.value.length === 0 || selectedSubjects.value.length === 0) {
+    // cleaning
+    return
+  }
+  const res = await getStudentEvaluation({
+    student_id: selectedStudentId.value,
+    subject_ids: selectedSubjects.value.toString(),
+    term_ids: selectedTerms.value.toString()
+  });
+  selectedStudentEvaluations.value = res.data
 }
 
 function handleSetupTerm(gradeId) {
@@ -54,7 +75,7 @@ function handleSetupTerm(gradeId) {
 <template>
   <div class="content" flex flex-col flex-items-center>
     <el-divider/>
-    <div style="background-color: #def6ff" w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
+    <div w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
       <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId"/>
       <el-divider/>
       <StudentSelectionBox ref="studentSelectionBox" :selectedSchoolId="selectedSchoolId"
@@ -77,6 +98,7 @@ function handleSetupTerm(gradeId) {
           <div b-rounded-2 h-180 flex flex-col>
             <StudentStatisticsChart ref="studentStatisticsChart" :selectedStudentId="selectedStudentId" :selectedTerms="selectedTerms" />
             <el-divider/>
+            <!-- {{ selectedStudentEvaluations.length }} -->
             <StudentBarChart/>
           </div>
         </el-col>

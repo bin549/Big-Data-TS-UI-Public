@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getStudentEvaluation } from "@/api/base.ts"
 
 const props = defineProps({
   selectedStudentId: String,
@@ -7,12 +6,6 @@ const props = defineProps({
 })
 
 async function refresh() {
-  await getStudentEvaluation({
-    student_id: props.selectedStudentId,
-    term_id: 14
-  }).then((res: any) => {
-    console.log(res)
-  })
 }
 
 defineExpose({
@@ -22,7 +15,7 @@ defineExpose({
 
 <template>
   <div style="background-color: #def6ff;" rounded-md>
-    <h4 style="background-color: #def6ff; color: white;" font-bold p-3 content-center text-lg text-gray-500>数据统计</h4>
+    <h4 style="background-color: #c7f4ff;  color: white;" font-bold p-3 content-center text-lg text-gray-500>数据统计</h4>
     <div h-full>
       <el-row>
         <el-col :span="4" b-white b-1>

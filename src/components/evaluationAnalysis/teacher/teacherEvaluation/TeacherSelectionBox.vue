@@ -11,7 +11,6 @@ const selectedTeacherId = ref<number>(1);
 const teachers = ref<any>([]);
 
 async function getTeachers() {
-  console.log(props.selectedSchoolId)
   const res = await getTeacherList({
     school_id: props.selectedSchoolId
   })
@@ -28,8 +27,8 @@ defineExpose({
 </script>
 
 <template>
-  <div style="background-color: #def6ff" mt--3>
-    <h4 font-bold pl-3 content-center text-lg text-gray-500>教师选择</h4>
+  <div>
+    <h4 style="background-color: #c7f4ff;  color: white;" font-bold pl-3 content-center text-lg text-gray-500>教师选择</h4>
     <el-row>
       <el-col style="background-color: #def6ff" :xs="6" :lg="6" :xl="6">
         <el-form>

@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div style="background-color: #def6ff" rounded-md b-rounded-2>
-    <h4 font-bold pl-3 content-center text-lg text-gray-500 mt-4>数据统计</h4>
-    <div h-full>
+  <div rounded-md b-rounded-2>
+    <h4 style="background-color: #c7f4ff; color: white;" font-bold pl-3 content-center text-lg >数据统计</h4>
+    <div h-full style="background-color: #def6ff;">
       <el-row>
         <el-col :span="4" b-gray b-1>
           <div content-center style="font-size: 14px;">

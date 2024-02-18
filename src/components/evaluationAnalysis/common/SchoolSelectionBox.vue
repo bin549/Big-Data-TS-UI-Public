@@ -76,7 +76,7 @@ onMounted(async () => {
 
 <template>
   <div style="background-color: #def6ff" mb--8>
-    <h4 style="background-color: #def6ff; color: def6ff;" font-bold pl-3 content-center text-lg text-gray-500 mt-4>学校选择</h4>
+    <h4 style="background-color: #c7f4ff;  color: white;" font-bold pl-3 content-center text-lg text-gray-500>学校选择</h4>
     <el-row flex flex-justify-center content-center>
       <el-col :xs="8" :lg="8" :xl="8">
         <el-form>
