@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue";
 import StudentSelectionBox from "@/components/evaluationAnalysis/student/studentEvaluation/StudentSelectionBox.vue";
 import TermSelectionBox from "@/components/evaluationAnalysis/common/TermSelectionBox.vue";
@@ -7,12 +7,14 @@ import SubjectSelectionBox from "@/components/evaluationAnalysis/common/SubjectS
 import StudentStatisticsChart from "@/components/evaluationAnalysis/student/studentEvaluation/StudentStatisticsChart.vue";
 import StudentBarChart from "@/components/evaluationAnalysis/student/studentEvaluation/StudentBarChart.vue";
 import { getStudentEvaluation } from "@/api/base.ts"
+import { ElMessage } from "element-plus";
+import type { StudentEvaluation } from "@/types/chart.ts";
 
 const selectedSchoolId = ref<number>();
 const selectedStudentId = ref<string>("");
 const selectedTerms = ref<any>([]);
 const selectedSubjects = ref<any>([]);
-const selectedStudentEvaluations = ref<any>([]);
+const selectedStudentEvaluations = ref<Array<StudentEvaluation>>([]);
 type studentSelectionBoxCtx = InstanceType<typeof StudentSelectionBox>
 const studentSelectionBox = ref<null | studentSelectionBoxCtx>(null)
 type subjectSelectionBoxCtx = InstanceType<typeof SubjectSelectionBox>
@@ -21,7 +23,9 @@ type termSelectionBoxCtx = InstanceType<typeof TermSelectionBox>
 const termSelectionBox = ref<null | termSelectionBoxCtx>(null)
 type studentStatisticsChartCtx = InstanceType<typeof StudentStatisticsChart>
 const studentStatisticsChart = ref<null | studentStatisticsChartCtx>(null)
-
+type studentBarChartCtx = InstanceType<typeof StudentBarChart>
+const studentBarChart = ref<null | studentBarChartCtx>(null)
+  
 function handleChangeSelectedSchoolId(schoolId) {
   selectedSchoolId.value = schoolId
   setTimeout(() => {
@@ -34,10 +38,9 @@ function handleChangeSelectedSchoolId(schoolId) {
 function handleReset() {
   studentSelectionBox.value?.reset()
 }
- 
+
 function handleChangeSelectedTerms(terms) {
   selectedTerms.value = terms
-  studentStatisticsChart.value?.refresh()
   fetchData()
 }
 
@@ -49,14 +52,16 @@ function handleChangeSelectedSubjects(subjects) {
 function handleChangeSelectedStudentId(studentId) {
   selectedStudentId.value = studentId
   fetchData()
-  setTimeout(() => {
-    studentStatisticsChart.value?.refresh()
-  },300)
 }
 
 async function fetchData() {
-  if (selectedTerms.value.length === 0 || selectedSubjects.value.length === 0) {
-    // cleaning
+  selectedStudentEvaluations.value = []
+  if (selectedTerms.value.length === 0) {
+    ElMessage.warning("请先选择评语学期！")
+    return
+  }
+  if (selectedSubjects.value.length === 0) {
+    ElMessage.warning("请先选择评语科目！")
     return
   }
   const res = await getStudentEvaluation({
@@ -64,7 +69,14 @@ async function fetchData() {
     subject_ids: selectedSubjects.value.toString(),
     term_ids: selectedTerms.value.toString()
   });
-  selectedStudentEvaluations.value = res.data
+  selectedStudentEvaluations.value =res.data.map(({content, score}: any) => ({
+    content: content,
+    score: score,
+  }))
+  studentBarChart.value?.disposeChart()
+  setTimeout(() => {
+    studentBarChart.value?.initChart()
+  }, 300)
 }
 
 function handleSetupTerm(gradeId) {
@@ -74,32 +86,30 @@ function handleSetupTerm(gradeId) {
 
 <template>
   <div class="content" flex flex-col flex-items-center>
-    <el-divider/>
+    <el-divider />
     <div w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
-      <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId"/>
-      <el-divider/>
-      <StudentSelectionBox ref="studentSelectionBox" :selectedSchoolId="selectedSchoolId"
-                           @setUpTerm="handleSetupTerm"
-                           @changeSelectedStudentId="handleChangeSelectedStudentId"/>
+      <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId" />
+      <el-divider />
+      <StudentSelectionBox ref="studentSelectionBox" :selectedSchoolId="selectedSchoolId" @setUpTerm="handleSetupTerm"
+        @changeSelectedStudentId="handleChangeSelectedStudentId" />
     </div>
-    <el-divider/>
+    <el-divider />
     <div w-full flex flex-col flex-items-center>
       <el-row w-full class="term-selection">
         <el-col :xs="24" :lg="12" :xl="8" b-rounded-2 rounded-md>
-          <TermSelectionBox ref="termSelectionBox" @changeSelectedTerms="handleChangeSelectedTerms"/>
-          <el-divider/>
+          <TermSelectionBox ref="termSelectionBox" @changeSelectedTerms="handleChangeSelectedTerms" />
+          <el-divider />
           <SubjectSelectionBox ref="subjectSelectionBox" :selectedSchoolId="selectedSchoolId"
-                               @changeSelectedSubjects="handleChangeSelectedSubjects"/>
+            @changeSelectedSubjects="handleChangeSelectedSubjects" />
         </el-col>
         <el-col :lg="1">
-          <el-divider/>
+          <el-divider />
         </el-col>
         <el-col :xs="24" :lg="11" :xl="8">
           <div b-rounded-2 h-180 flex flex-col>
-            <StudentStatisticsChart ref="studentStatisticsChart" :selectedStudentId="selectedStudentId" :selectedTerms="selectedTerms" />
-            <el-divider/>
-            <!-- {{ selectedStudentEvaluations.length }} -->
-            <StudentBarChart/>
+            <StudentStatisticsChart ref="studentStatisticsChart" :selectedStudentEvaluations="selectedStudentEvaluations" />
+            <el-divider />
+            <StudentBarChart ref="studentBarChart" :selectedStudentEvaluations="selectedStudentEvaluations"/>
           </div>
         </el-col>
       </el-row>
@@ -133,4 +143,4 @@ function handleSetupTerm(gradeId) {
     width: 100%;
   }
 }
-</style>
+</style>@/types/chart

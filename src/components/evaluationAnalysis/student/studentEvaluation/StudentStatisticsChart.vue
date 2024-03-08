@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { StudentEvaluation } from "@/types/chart.ts";
 
 const props = defineProps({
-  selectedStudentId: String,
-  selectedTerms: Array<Number>,
+  selectedStudentEvaluations: Array<StudentEvaluation>,
 })
 
 async function refresh() {
+  console.log(props.selectedStudentEvaluations)
 }
 
 defineExpose({
@@ -24,8 +25,9 @@ defineExpose({
           </div>
         </el-col>
         <el-col :span="8" b-white b-1>
-          <div class="grid-content ep-bg-purple-light" />
-          14
+          <div class="grid-content ep-bg-purple-light color-red font-bold" >
+          {{props.selectedStudentEvaluations.length}}
+          </div>
         </el-col>
         <el-col :span="4" b-white b-1>
           <div content-center style="font-size: 14px;">

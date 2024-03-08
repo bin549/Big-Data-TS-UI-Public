@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import * as echarts from "echarts";
-import {onMounted} from "vue";
+import { ref } from "vue";
+import type { StudentEvaluation } from "@/types/chart.ts";
+
+const props = defineProps({
+  selectedStudentEvaluations: Array<StudentEvaluation>,
+})
+
+const xData = ref<Array<string>>(['德育:讲卫生，能做到勤剪指甲', '英语:按时完成作业', '英语:没有按时认真完成作业。', '英语:英语暑假作业完成情况优异', '语文:你的口头作文真精彩！', '语文:声音响亮、有感情地朗读课文。', '德育:认真完成“学党史  颂党恩”手抄报。', '幸福生活劳动:值日工作细致高效。', '音乐:恭喜你音乐知识笔试成绩90分以上。', '幸福生活劳动:积极完成劳动作业。', '科学:学习态度认真，第一次复习阶段按要求完成学习任务。'])
+const yData = ref<Array<number>>([18203, 23489, 29034, 104970, 131744, 630230, 104970, 131744, 23489, 29034, 104970])
 
 const option = {
   tooltip: {
@@ -22,7 +30,7 @@ const option = {
   },
   yAxis: {
     type: 'category',
-    data: ['德育:讲卫生，能做到勤剪指甲', '英语:按时完成作业', '英语:没有按时认真完成作业。', '英语:英语暑假作业完成情况优异', '语文:你的口头作文真精彩！', '语文:声音响亮、有感情地朗读课文。', '德育:认真完成“学党史  颂党恩”手抄报。', '幸福生活劳动:值日工作细致高效。', '音乐:恭喜你音乐知识笔试成绩90分以上。', '幸福生活劳动:积极完成劳动作业。', '科学:学习态度认真，第一次复习阶段按要求完成学习任务。']
+    data: xData.value
   },
   series: [
     {
@@ -32,7 +40,7 @@ const option = {
         borderRadius: 30
       },
       type: 'bar',
-      data: [18203, 23489, 29034, 104970, 131744, 630230, 104970, 131744, 23489, 29034, 104970],
+      data: yData.value,
       itemStyle: {
         normal: {
           color: function (params) {
@@ -51,14 +59,38 @@ const option = {
   ]
 };
 
+function countContent(arr) {
+  const contentMap = {}
+  for (const item of arr) {
+    const content = item.content
+    if (!contentMap[content]) 
+      contentMap[content] = 0
+    contentMap[content]++
+  }
+  const contents = []
+  const frequencies = []
+  for (const [content, frequency] of Object.entries(contentMap)) {
+    contents.push(content)
+    frequencies.push(frequency)
+  }
+  xData.value = contents
+  yData.value = frequencies
+}
+
+function disposeChart() {
+  echarts.init(document.getElementById("bar-chart")!).dispose();
+}
+
 function initChart() {
+  countContent(props.selectedStudentEvaluations)
   const chartDom = document.getElementById('bar-chart')!;
   const myChart = echarts.init(chartDom);
   option && myChart.setOption(option);
 }
 
-onMounted(() => {
-  initChart()
+defineExpose({
+  disposeChart,
+  initChart
 })
 </script>
 
