@@ -58,7 +58,7 @@ function checkEvaluationData(index) {
         :selectedSchoolId="selectedSchoolId" />
     </div>
     <el-divider />
-    <div class="avatar-avatar-container justify-center items-center flex;">
+    <div class="avatar-container justify-center items-center flex;">
       <BaseSpinner v-if="isLoading"/>
       <el-row style="width: 95%; left: 2%;" class="absolute;" v-else>
         <el-col class="flex" :xs="8" :sm="6" :md="4" :lg="3" :xl="1" v-for="(student, index) in students"
@@ -72,7 +72,7 @@ function checkEvaluationData(index) {
 </template>
 
 <style scoped lang="scss">
-.avatar-avatar-container {
+.avatar-container {
   overflow-x: hidden;
   overflow-y: scroll;
   height: 50vh;
@@ -81,21 +81,17 @@ function checkEvaluationData(index) {
 
 .avatar-container::-webkit-scrollbar {
   width: 10px;
-  /* 设置滚动条的宽度 */
 }
 
 .avatar-container::-webkit-scrollbar-track {
   background-color: #f1f1f1;
-  /* 设置滚动条的背景颜色 */
 }
 
 .avatar-container::-webkit-scrollbar-thumb {
   background-color: #888;
-  /* 设置滚动条的滑块颜色 */
 }
 
 .avatar-container::-webkit-scrollbar-thumb:hover {
   background-color: #555;
-  /* 设置鼠标悬停时滚动条滑块的颜色 */
 }
 </style>
