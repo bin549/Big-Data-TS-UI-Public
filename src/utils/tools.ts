@@ -9,3 +9,21 @@ export function getGradeList() {
   ];
   return gradeList;
 }
+
+
+export function countContent(arr) {
+  const contentMap = {}
+  for (const item of arr) {
+    const content = item.content
+    if (!contentMap[content])
+      contentMap[content] = 0
+    contentMap[content]++
+  }
+  const contents = []
+  const frequencies = []
+  for (const [content, frequency] of Object.entries(contentMap)) {
+    contents.push(content)
+    frequencies.push(frequency)
+  }
+  return [contents, frequencies]
+}

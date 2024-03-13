@@ -1,16 +1,34 @@
 <script setup lang="ts">
 import type { StudentEvaluation } from "@/types/chart.ts";
+import { countContent } from "@/utils/tools.ts";
+import { ref } from "vue"
+
+const topEvaluations = ref<Array<string>>(["德育-德育:早上“入室即静、入座即读”，认真早读。 共2次", "德育-德育:值日认真负责。 共2次", "语文-语文:流利地背诵课文。 共2次"])
 
 const props = defineProps({
   selectedStudentEvaluations: Array<StudentEvaluation>,
 })
 
-async function refresh() {
-  console.log(props.selectedStudentEvaluations)
+async function cleanData() {
+  topEvaluations.value.splice(0, topEvaluations.value.length)
+}
+
+async function fetchData() {
+  if (props.selectedStudentEvaluations.length === 0)
+    return
+  const [contents, frequencies] = countContent(props.selectedStudentEvaluations)
+  if (frequencies.length < 2) {
+    topEvaluations.value = contents
+    return
+  }
+  const sortFrequencies = frequencies.sort((a, b) => b - a)
+  const topIndexs = sortFrequencies.length > 3 ? sortFrequencies.slice(0, 3) : sortFrequencies
+  topEvaluations.value = topIndexs.map(topIndex => contents[topIndex])
 }
 
 defineExpose({
-  refresh
+  cleanData,
+  fetchData
 })
 </script>
 
@@ -25,8 +43,8 @@ defineExpose({
           </div>
         </el-col>
         <el-col :span="8" b-white b-1>
-          <div class="grid-content ep-bg-purple-light color-red font-bold" >
-          {{props.selectedStudentEvaluations.length}}
+          <div class="grid-content ep-bg-purple-light color-green font-bold">
+            {{ props.selectedStudentEvaluations.length }}
           </div>
         </el-col>
         <el-col :span="4" b-white b-1>
@@ -66,9 +84,10 @@ defineExpose({
         </el-col>
         <el-col :span="8" b-white b-1>
           <div content-center style="font-size: 14px;">
-            德育-德育:早上“入室即静、入座即读”，认真早读。 共2次
-            德育-德育:值日认真负责。 共2次
-            语文-语文:流利地背诵课文。 共2次
+            <p class="c-green font-bold" v-for="(evalutaion, index) in topEvaluations">
+             {{index+1}}. {{ evalutaion }}
+            </p>
+            <p class="c-red" v-if="topEvaluations.length === 0">无数据</p>
           </div>
         </el-col>
         <el-col :span="4" b-white b-1>

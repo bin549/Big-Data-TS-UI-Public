@@ -51,18 +51,18 @@ function checkEvaluationData(index) {
 <template>
   <div class="content" flex flex-col flex-items-center>
     <el-divider />
-    <div style="background-color: #def6ff" w-full class="nav-bar" flex flex-col rounded-md b-rounded-2 mt-2 mb-2>
+    <div style="background-color: #def6ff" class="nav-bar flex flex-col rounded-md b-rounded-2 mt-2 mb-2 w-full">
       <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId" />
       <el-divider />
       <ClassSelectionBox ref="classSelectionBox" @changeSelectedClassId="handleChangeSelectedClassId"
         :selectedSchoolId="selectedSchoolId" />
     </div>
     <el-divider />
-    <div class="avatar-avatar-container justify-center items-center flex; ">
+    <div class="avatar-avatar-container justify-center items-center flex;">
       <BaseSpinner v-if="isLoading"/>
       <el-row style="width: 95%; left: 2%;" class="absolute;" v-else>
         <el-col class="flex" :xs="8" :sm="6" :md="4" :lg="3" :xl="1" v-for="(student, index) in students"
-          style=" padding: 5px;"
+          style="padding: 5px;"
           @click="checkEvaluationData(index)">
           <StudentAvatarCard :sex="student.sex" :name="student.name" />
         </el-col>

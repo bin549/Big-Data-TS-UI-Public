@@ -11,6 +11,7 @@ import BookLoader from "@/components/evaluationAnalysis/utils/BookLoader.vue";
 import IndexCard from "@/components/evaluationAnalysis/IndexCard.vue";
 import StudentData from "@/views/evaluationAnalysis/student/StudentData.vue";
 import TeacherData from "@/views/evaluationAnalysis/teacher/TeacherData.vue";
+import StudentTable from "@/views/evaluationAnalysis/student/StudentTable.vue";
 
 const isCollapse = computed(() => {
   return !pureApp.getSidebarStatus;
@@ -23,6 +24,7 @@ const isTeacherRank = ref<boolean>(false)
 const isLoading = ref<boolean>(true)
 const isStudentData = ref<boolean>(false)
 const isTeacherData = ref<boolean>(false)
+const isStudentTable = ref<boolean>(false)
 
 function setPageState(index) {
   isLoading.value = true
@@ -32,12 +34,14 @@ function setPageState(index) {
   isTeacherRank.value = false
   isStudentData.value = false
   isTeacherData.value = false
+  isStudentTable.value = false
   if (index == 1) isIndex.value = true
   if (index == 2) isStudent.value = true
   if (index == 3) isTeacher.value = true
   if (index == 4) isTeacherRank.value = true
   if (index == 5) isStudentData.value = true
   if (index == 6) isTeacherData.value = true
+  if (index == 7) isStudentTable.value = true
   setTimeout(() => {
     isLoading.value = false
   }, 0)
@@ -50,6 +54,7 @@ const submodule = {
   teacher_rank: 4,
   student_data: 5,
   teacher_data: 6,
+  student_table: 7
 }
 
 function handleCheckStudentEvaluation() {
@@ -74,7 +79,8 @@ onMounted(() => {
       <el-button @click="setPageState(submodule.teacher_rank)" v-if="isTeacher">教师排行</el-button>
       <el-button @click="setPageState(submodule.student_data)" v-if="isStudent">学生检索</el-button>
       <el-button @click="setPageState(submodule.teacher_data)" v-if="isTeacher || isTeacherRank">教师检索</el-button>
-      <el-button @click="setPageState(submodule.student_evaluation)" v-if="isStudentData">学生评价</el-button>
+      <el-button @click="setPageState(submodule.student_evaluation)" v-if="isStudentData || isStudentTable">学生评价</el-button>
+      <el-button @click="setPageState(submodule.student_table)" v-if="isStudent">学生统计</el-button>
     </div>
     <index-card v-if="isIndex" @setPageState="setPageState"/>
     <student-evaluation v-if="isStudent"/>
@@ -82,6 +88,7 @@ onMounted(() => {
     <teacher-ranking v-if="isTeacherRank"/>
     <student-data @checkStudentEvaluation="handleCheckStudentEvaluation" v-if="isStudentData"/>
     <teacher-data v-if="isTeacherData"/>
+    <student-table v-if="isStudentTable"/>
   </div>
 </template>
 

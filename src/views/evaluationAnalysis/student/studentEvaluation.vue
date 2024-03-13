@@ -25,7 +25,7 @@ type studentStatisticsChartCtx = InstanceType<typeof StudentStatisticsChart>
 const studentStatisticsChart = ref<null | studentStatisticsChartCtx>(null)
 type studentBarChartCtx = InstanceType<typeof StudentBarChart>
 const studentBarChart = ref<null | studentBarChartCtx>(null)
-  
+
 function handleChangeSelectedSchoolId(schoolId) {
   selectedSchoolId.value = schoolId
   setTimeout(() => {
@@ -56,11 +56,14 @@ function handleChangeSelectedStudentId(studentId) {
 
 async function fetchData() {
   selectedStudentEvaluations.value = []
+  studentStatisticsChart.value?.cleanData()
   if (selectedTerms.value.length === 0) {
+    studentBarChart.value?.disposeChart()
     ElMessage.warning("请先选择评语学期！")
     return
   }
   if (selectedSubjects.value.length === 0) {
+    studentBarChart.value?.disposeChart()
     ElMessage.warning("请先选择评语科目！")
     return
   }
@@ -69,12 +72,13 @@ async function fetchData() {
     subject_ids: selectedSubjects.value.toString(),
     term_ids: selectedTerms.value.toString()
   });
-  selectedStudentEvaluations.value =res.data.map(({content, score}: any) => ({
+  selectedStudentEvaluations.value = res.data.map(({ content, score }: any) => ({
     content: content,
     score: score,
   }))
   studentBarChart.value?.disposeChart()
   setTimeout(() => {
+    studentStatisticsChart.value?.fetchData()
     studentBarChart.value?.initChart()
   }, 300)
 }
@@ -107,9 +111,10 @@ function handleSetupTerm(gradeId) {
         </el-col>
         <el-col :xs="24" :lg="11" :xl="8">
           <div b-rounded-2 h-180 flex flex-col>
-            <StudentStatisticsChart ref="studentStatisticsChart" :selectedStudentEvaluations="selectedStudentEvaluations" />
+            <StudentStatisticsChart ref="studentStatisticsChart"
+              :selectedStudentEvaluations="selectedStudentEvaluations" />
             <el-divider />
-            <StudentBarChart ref="studentBarChart" :selectedStudentEvaluations="selectedStudentEvaluations"/>
+            <StudentBarChart ref="studentBarChart" :selectedStudentEvaluations="selectedStudentEvaluations" />
           </div>
         </el-col>
       </el-row>
