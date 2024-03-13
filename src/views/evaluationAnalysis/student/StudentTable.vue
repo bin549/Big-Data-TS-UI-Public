@@ -1,88 +1,25 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { getStudentList } from "@/api/base.ts"
 import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue";
 import ClassSelectionBox from "@/components/evaluationAnalysis/common/ClassSelectionBox.vue";
+import { weekDatas } from "@/store/modules/evaluationAnalysis.ts";
+import type { WeekOption, StudentRow } from "@/types/evaluationAnalysis.ts"
+import { ElMessage } from "element-plus";
 
 type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
 const classSelectionBox = ref<null | classSelectionBoxCtx>(null)
 
 const selectedSchoolId = ref<number>();
-interface WeekOption {
-    id: number,
-    name: string
-}
-const weeks = ref<WeekOption[]>([
-    {
-        id: 0,
-        name: "全部"
-    },
-    {
-        id: 1,
-        name: "第一周"
-    },
-    {
-        id: 2,
-        name: "第二周"
-    },
-    {
-        id: 3,
-        name: "第三周"
-    },
-    {
-        id: 4,
-        name: "第四周"
-    },
-    {
-        id: 5,
-        name: "第五周"
-    },
-    {
-        id: 6,
-        name: "第六周"
-    },
-])
+const weeks = ref<WeekOption[]>(weekDatas)
 const selectedWeekId = ref<number>(0)
 const isDialogVisible = ref<boolean>(false)
-const isLoading = ref<boolean>(false)
+const isLoading = ref<boolean>(true)
 
-
-const grades = ref<any>()
-const selectedGradeId = ref<number>(0)
-const students = ref<any>([
-    {
-        id: '2016-05-03',
-        name: 'Tom',
-        scoreAvg: 20,
-        scoreTotal: 20,
-        scoreWeek: 20,
-        starWeek: 20,
-        starProgress: 20,
-    },
-    {
-        id: '2016-05-03',
-        name: 'Tom',
-        scoreAvg: 20,
-        scoreTotal: 20,
-        scoreWeek: 20,
-        starWeek: 20,
-        starProgress: 20,
-    },
-    {
-        id: '2016-05-03',
-        name: 'Tom',
-        scoreAvg: 20,
-        scoreTotal: 20,
-        scoreWeek: 20,
-        starWeek: 20,
-        starProgress: 20,
-    }
-])
-
+const students = ref<StudentRow[]>([])
 const radarChart = ref<any>()
-
 
 const option = {
     tooltip: {
@@ -178,6 +115,10 @@ function handleChangeSelectedSchoolId(schoolId) {
         classSelectionBox.value?.changeGradeId();
     }, 100)
 }
+
+function exportData() {
+    ElMessage.info("功能未实现，敬请期待。")
+}
 </script>
 
 <template>
@@ -186,7 +127,7 @@ function handleChangeSelectedSchoolId(schoolId) {
             <div style="background-color: #def6ff"
                 class="nav-bar flex flex-col gap-y-13 rounded-md b-rounded-2 mt-2 mb-2 w-full">
                 <SchoolSelectionBox @reset="handleReset" @changeSelectedSchoolId="handleChangeSelectedSchoolId" />
-                <ClassSelectionBox @changeSelectedClassId="handleChangeSelectedClassId"
+                <ClassSelectionBox ref="classSelectionBox" @changeSelectedClassId="handleChangeSelectedClassId"
                     :selectedSchoolId="selectedSchoolId" />
             </div>
             <div class="flex flex-row p-4">
@@ -197,30 +138,30 @@ function handleChangeSelectedSchoolId(schoolId) {
                     </el-select>
                 </div>
                 <div class="flex flex-row ml-7">
-                    <el-button>导出</el-button>
+                    <el-button @click="exportData">导出</el-button>
                 </div>
             </div>
         </div>
         <div class="w-350 c-white p-4 font-bold text-lg" style="background-color: rgb(199, 244, 255);">统计分析</div>
         <div class="w-350 bg-white avatar-container">
             <el-table :data="students" style="width: 100%" v-loading="isLoading">
-                <el-table-column prop="id" label="学号" width="100">
+                <el-table-column prop="id" label="学号" width="130">
                     <template #default="scope">
                         {{ scope.$index + 1 }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="150" />
-                <el-table-column prop="scoreAvg" label="班总平均分" width="150" sortable />
-                <el-table-column prop="scoreTotal" label="总得分" width="150" sortable />
-                <el-table-column prop="scoreWeek" label="本周得分" width="150" sortable />
-                <el-table-column prop="starWeek" label="每周之星" width="150" sortable />
-                <el-table-column prop="starProgress" label="超越之星" width="150" sortable />
-                <el-table-column label="雷达图" width="170">
+                <el-table-column prop="name" label="姓名" width="160" />
+                <el-table-column prop="scoreAvg" label="班总平均分" width="160" sortable />
+                <el-table-column prop="scoreTotal" label="总得分" width="160" sortable />
+                <el-table-column prop="scoreWeek" label="本周得分" width="160" sortable />
+                <el-table-column prop="starWeek" label="每周之星" width="160" sortable />
+                <el-table-column prop="starProgress" label="超越之星" width="160" sortable />
+                <el-table-column label="雷达图" width="160">
                     <template #default="scope">
                         <el-button @click="showRadarChart(scope.$index)" style="font-size: 20px;">✡︎</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="170">
+                <el-table-column label="操作" width="160">
                     <template #default="scope">
                         <el-button @click="showRadarChart(scope.$index)">查看</el-button>
                     </template>

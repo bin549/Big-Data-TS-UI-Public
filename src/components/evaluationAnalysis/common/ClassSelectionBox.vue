@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref, onMounted} from "vue"
-import {getClassList, getGradeList} from "@/api/base";
+import {getClassList, getGradeList} from "@/api/base.ts";
 
 const selectedGradeId = ref<number>();
 const selectedClassId = ref<string>("");
@@ -24,7 +24,6 @@ async function getGrades() {
     selectedGradeId.value = grades.value[0].id
   })
 }
-
 
 async function refresh() {
   selectedClassId.value = null

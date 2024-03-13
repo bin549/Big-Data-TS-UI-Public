@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { ref, onMounted } from "vue";
-import type { StudentEvaluation } from "@/types/chart.ts";
+import { ref } from "vue";
+import type { StudentEvaluation } from "@/types/evaluationAnalysis.ts";
 import { countContent } from "@/utils/tools.ts";
 
 const props = defineProps({

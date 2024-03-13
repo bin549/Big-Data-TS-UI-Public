@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { StudentEvaluation } from "@/types/chart.ts";
+import type { StudentEvaluation } from "@/types/evaluationAnalysis.ts";
 import { countContent } from "@/utils/tools.ts";
 import { ref } from "vue"
 

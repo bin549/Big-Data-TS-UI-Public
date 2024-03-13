@@ -8,7 +8,7 @@ import StudentStatisticsChart from "@/components/evaluationAnalysis/student/stud
 import StudentBarChart from "@/components/evaluationAnalysis/student/studentEvaluation/StudentBarChart.vue";
 import { getStudentEvaluation } from "@/api/base.ts"
 import { ElMessage } from "element-plus";
-import type { StudentEvaluation } from "@/types/chart.ts";
+import type { StudentEvaluation } from "@/types/evaluationAnalysis.ts";
 
 const selectedSchoolId = ref<number>();
 const selectedStudentId = ref<string>("");

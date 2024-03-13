@@ -4,7 +4,7 @@ import { ref } from "vue";
 const emits = defineEmits(["setPageState"])
 import student_card_img from "@/assets/evaluationAnalysis/student-4-2.png";
 import teacher_card_img from "@/assets/evaluationAnalysis/teacher-6.png";
-import { CardItem } from "@/types/card.ts";
+import type { CardItem } from "@/types/evaluationAnalysis.ts";
 
 const card_items = ref<Array<CardItem>>([
   {
