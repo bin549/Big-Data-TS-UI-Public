@@ -22,7 +22,9 @@ async function getProvinces() {
       name: provinceName,
     }))
   })
-  if (provinces.value.length === 0) return;
+  if (provinces.value.length === 0) {
+    return
+  }
   selectedProvinceId.value = provinces.value[0].id
   await getAreas()
 }

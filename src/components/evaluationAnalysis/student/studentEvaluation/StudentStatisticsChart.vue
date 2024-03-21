@@ -14,8 +14,9 @@ async function cleanData() {
 }
 
 async function fetchData() {
-  if (props.selectedStudentEvaluations.length === 0)
+  if (props.selectedStudentEvaluations.length === 0) {
     return
+  }
   const [contents, frequencies] = countContent(props.selectedStudentEvaluations)
   if (frequencies.length < 2) {
     topEvaluations.value = contents

@@ -13,9 +13,13 @@ type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
 const classSelectionBox = ref<null | classSelectionBoxCtx>(null)
 
 const selectedSchoolId = ref<number>();
+const terms = ref<WeekOption[]>(weekDatas)
+const selectedTermId = ref<number>(0)
 const weeks = ref<WeekOption[]>(weekDatas)
 const selectedWeekId = ref<number>(0)
-const isDialogVisible = ref<boolean>(false)
+const isRadarDialogVisible = ref<boolean>(false)
+const isHistoryDialogVisible = ref<boolean>(false)
+    
 const isLoading = ref<boolean>(true)
 
 const students = ref<StudentRow[]>([])
@@ -99,11 +103,15 @@ async function handleChangeSelectedClassId(classId) {
 }
 
 function showRadarChart(index: number) {
-    isDialogVisible.value = true
+    isRadarDialogVisible.value = true
     setTimeout(() => {
         disposeChart()
         initChart()
     }, 300)
+}
+
+function showHistoryChart(index: number) {
+    isHistoryDialogVisible.value = true
 }
 
 function handleReset() {
@@ -131,6 +139,12 @@ function exportData() {
                     :selectedSchoolId="selectedSchoolId" />
             </div>
             <div class="flex flex-row p-4">
+                <div class="flex flex-row ml-7">
+                    <p>学期</p>
+                    <el-select v-model="selectedWeekId" placeholder="Select" size="large" style="width: 240px">
+                        <el-option v-for="week in weeks" :key="week.id" :label="week.name" :value="week.id" />
+                    </el-select>
+                </div>
                 <div class="flex flex-row ml-7">
                     <p>周次</p>
                     <el-select v-model="selectedWeekId" placeholder="Select" size="large" style="width: 240px">
@@ -161,6 +175,11 @@ function exportData() {
                         <el-button @click="showRadarChart(scope.$index)" style="font-size: 20px;">✡︎</el-button>
                     </template>
                 </el-table-column>
+                <el-table-column label="详情" width="160">
+                    <template #default="scope">
+                        <el-button @click="showHistoryChart(scope.$index)" style="font-size: 20px;">✡︎</el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template #default="scope">
                         <el-button @click="showRadarChart(scope.$index)">查看</el-button>
@@ -169,7 +188,12 @@ function exportData() {
             </el-table>
         </div>
     </div>
-    <el-dialog v-model="isDialogVisible" title="雷达图" width="500" align-center>
+    <el-dialog v-model="isRadarDialogVisible" title="雷达图" width="500" align-center>
+        <div class="bg-cyan-100 w-full h-100">
+            <div ref="radarChart" id="radar-chart" />
+        </div>
+    </el-dialog>
+    <el-dialog v-model="isHistoryDialogVisible" title="雷达图" width="500" align-center>
         <div class="bg-cyan-100 w-full h-100">
             <div ref="radarChart" id="radar-chart" />
         </div>

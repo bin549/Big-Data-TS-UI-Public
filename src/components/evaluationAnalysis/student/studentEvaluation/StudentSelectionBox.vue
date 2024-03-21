@@ -55,7 +55,9 @@ async function getStudents() {
       name: name,
     }))
   })
-  if (students.value.length === 0) return;
+  if (students.value.length === 0) {
+    return
+  }
   selectedStudentId.value = students.value[0].id
   changeSelectedStudentId()
 }

@@ -68,7 +68,7 @@ function disposeChart() {
   xData.value.splice(0, xData.value.length)
   yData.value.splice(0, yData.value.length)
   barChart.value.classList.add("chart-hide")
-  echarts.init(document.getElementById("bar-chart")!).dispose();
+  echarts.init(document.getElementById("bar-chart")!).dispose()
   isLoading.value = false
 }
 
@@ -79,7 +79,7 @@ function initChart() {
     xData.value.push(contents[i])
     yData.value.push(frequencies[i])
   }
-  const chartDom = document.getElementById('bar-chart')!;
+  const chartDom = document.getElementById('bar-chart')!
   const myChart = echarts.init(chartDom);
   option && myChart.setOption(option);
 }
