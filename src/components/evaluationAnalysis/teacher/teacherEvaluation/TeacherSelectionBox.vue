@@ -42,4 +42,8 @@ defineExpose({
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.el-select .el-input__wrapper) {
+  width: 100px;
+}
+</style>

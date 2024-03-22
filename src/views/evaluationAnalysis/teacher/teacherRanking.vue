@@ -10,6 +10,8 @@ const subjectSelectionBox = ref<null | subjectSelectionBoxCtx>(null)
 const selectedSchoolId = ref<number>(1);
 const selectedTerms = ref<any>([1, 2]);
 const selectedSubjects = ref<any>([1, 2]);
+type termSelectionBoxCtx = InstanceType<typeof TermSelectionBox>
+const termSelectionBox = ref<null | termSelectionBoxCtx>(null)
 
 function handleChangeSelectedTerms(terms) {
   selectedTerms.value = terms
@@ -21,7 +23,10 @@ function handleChangeSelectedSubjects(subjects) {
 
 function handleChangeSelectedSchoolId(schoolId) {
   selectedSchoolId.value = schoolId
-  subjectSelectionBox.value?.getSubjects();
+  setTimeout(() => {
+    termSelectionBox.value?.getTerms()
+    subjectSelectionBox.value?.getSubjects();
+  },100)
 }
 </script>
 
@@ -37,7 +42,7 @@ function handleChangeSelectedSchoolId(schoolId) {
     <div w-full flex flex-col flex-items-center>
       <el-row w-full class="term-selection">
         <el-col :xs="24" :lg="12" :xl="8">
-          <TermSelectionBox @changeSelectedTerms="handleChangeSelectedTerms"/>
+          <TermSelectionBox ref="termSelectionBox" @changeSelectedTerms="handleChangeSelectedTerms"/>
           <el-divider/>
           <SubjectSelectionBox ref="subjectSelectionBox" :selectedSchoolId="selectedSchoolId"
                                @changeSelectedSubjects="handleChangeSelectedSubjects"/>

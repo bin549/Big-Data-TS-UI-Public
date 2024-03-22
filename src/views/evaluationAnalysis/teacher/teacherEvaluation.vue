@@ -7,12 +7,14 @@ import TeacherSelectionBox from "@/components/evaluationAnalysis/teacher/teacher
 import TeacherStatisticsChart from "@/components/evaluationAnalysis/teacher/teacherEvaluation/TeacherStatisticsChart.vue";
 import TeacherBarChart from "@/components/evaluationAnalysis/teacher/teacherEvaluation/TeacherBarChart.vue";
 
-const selectedSchoolId = ref<number>(1);
-const selectedTeacherId = ref<number>(1);
+const selectedSchoolId = ref<number>();
+const selectedTeacherId = ref<number>();
 type teacherSelectionBoxCtx = InstanceType<typeof TeacherSelectionBox>
 const teacherSelectionBox = ref<null | teacherSelectionBoxCtx>(null)
 type subjectSelectionBoxCtx = InstanceType<typeof SubjectSelectionBox>
 const subjectSelectionBox = ref<null | subjectSelectionBoxCtx>(null)
+type termSelectionBoxCtx = InstanceType<typeof TermSelectionBox>
+const termSelectionBox = ref<null | termSelectionBoxCtx>(null)
 const selectedTerms = ref<any>([1]);
 const selectedSubjects = ref<any>([1])
 
@@ -27,9 +29,10 @@ function handleChangeSelectedTerms(terms) {
 async function handleChangeSelectedSchoolId(schoolId) {
   selectedSchoolId.value = schoolId
   setTimeout(() => {
-    teacherSelectionBox.value?.getTeachers(selectedSchoolId.value)
-  },10)
-  // await subjectSelectionBox.value?.getSubjects()
+    teacherSelectionBox.value?.getTeachers()
+    termSelectionBox.value?.getTerms()
+    subjectSelectionBox.value?.getSubjects();
+  },100)
 }
 
 function handleChangeSelectedTeacherId(teacherId) {
@@ -53,7 +56,7 @@ function handleChangeSelectedTeacherId(teacherId) {
     <div w-full flex flex-col flex-items-center>
       <el-row w-full class="term-selection">
         <el-col :xs="24" :lg="12" :xl="8">
-          <TermSelectionBox @changeSelectedTerms="handleChangeSelectedTerms"/>
+          <TermSelectionBox ref="termSelectionBox" @changeSelectedTerms="handleChangeSelectedTerms"/>
           <el-divider/>
           <SubjectSelectionBox ref="subjectSelectionBox" :selectedSchoolId="selectedSchoolId"
                                @changeSelectedSubjects="handleChangeSelectedSubjects"/>
