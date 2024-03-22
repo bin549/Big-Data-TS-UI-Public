@@ -6,8 +6,8 @@ const props = defineProps({
   selectedSchoolId: Number
 })
 
-const selectedTeacherId = ref<number>(1);
-const teachers = ref<any>([]);
+const selectedTeacherId = ref<number>(1)
+const teachers = ref<any>([])
 
 async function getTeachers() {
   const res = await getTeacherList({
@@ -22,7 +22,7 @@ async function getTeachers() {
 
 defineExpose({
   getTeachers,
-});
+})
 </script>
 
 <template>

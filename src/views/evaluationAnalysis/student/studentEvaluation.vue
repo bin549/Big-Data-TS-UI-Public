@@ -148,4 +148,4 @@ function handleSetupTerm(gradeId) {
     width: 100%;
   }
 }
-</style>@/types/chart
+</style>

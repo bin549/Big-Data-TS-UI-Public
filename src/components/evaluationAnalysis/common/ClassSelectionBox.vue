@@ -36,7 +36,9 @@ async function refresh() {
       name: className,
     }))
   })
-  if (classes.value.length === 0) return;
+  if (classes.value.length === 0) {
+    return
+  }
   selectedClassId.value = classes.value[0].id
   changeSelectedClassId()
 }

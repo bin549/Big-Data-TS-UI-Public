@@ -2,11 +2,11 @@
 import {ref} from "vue"
 import {getTeacherList} from "@/api/base"
 
-import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue";
-import StudentAvatarCard from "@/components/evaluationAnalysis/student/studentEvaluation/StudentAvatarCard.vue";
-import BaseSpinner from "@/components/evaluationAnalysis/utils/BaseSpinner.vue";
+import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue"
+import StudentAvatarCard from "@/components/evaluationAnalysis/student/studentEvaluation/StudentAvatarCard.vue"
+import BaseSpinner from "@/components/evaluationAnalysis/utils/BaseSpinner.vue"
 
-const selectedSchoolId = ref<number>();
+const selectedSchoolId = ref<number>()
 const isLoading = ref<boolean>(true)
 const teachers = ref<any>([])
 

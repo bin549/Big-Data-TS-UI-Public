@@ -48,8 +48,11 @@ defineExpose({
 <template>
   <h4 style="background-color: #c7f4ff;  color: white;" font-bold p-3 content-center text-lg text-gray-500 p-4>科目选择
   </h4>
-  <div>全选
+  <div class="absolute;" style="margin-bottom: -60px;">
     <el-switch @change="toggleCheckAll" v-model="isCheckAll" />
+    <p>
+      全选
+    </p>
   </div>
   <div v-loading="isLoading" style="background-color: #def6ff;"
     class="flex flex-justify-center items-center rounded-md b-rounded-2 h-60">

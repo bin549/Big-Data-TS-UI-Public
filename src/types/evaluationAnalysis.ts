@@ -11,6 +11,13 @@ export interface StudentEvaluation {
     score: number
 }
 
+export interface StudentHistory {
+    id: number
+    content: string
+    score: number
+    subjectId: number
+}
+
 export interface Option {
   key: number
   label: string

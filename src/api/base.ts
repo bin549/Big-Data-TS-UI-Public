@@ -76,3 +76,12 @@ export const getStudentEvaluation = (params?: object) => {
     params: params
   });
 };
+
+
+export const getStudentEvaluationWeek = (params?: object) => {
+  return axios({
+    url: "/api/student_evaluation/list_week",
+    methos: "get",
+    params: params
+  });
+};

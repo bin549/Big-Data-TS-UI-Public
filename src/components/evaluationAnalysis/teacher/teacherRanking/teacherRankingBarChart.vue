@@ -52,14 +52,14 @@ var option = {
 };
 
 function initChart() {
-  var chartDom = document.getElementById('bar-chart')!;
-  var myChart = echarts.init(chartDom);
-  option && myChart.setOption(option);
+  var chartDom = document.getElementById('bar-chart')!
+  var myChart = echarts.init(chartDom)
+  option && myChart.setOption(option)
 }
 
 onMounted(() => {
-  initChart();
-});
+  initChart()
+})
 </script>
 
 <template>

@@ -8,12 +8,12 @@ defineProps({
 
 const emits = defineEmits(["changeSelectedSchoolId", "reset"])
 
-const provinces = ref<any>();
-const selectedProvinceId = ref<number>();
-const citys = ref<any>([]);
-const selectedCityId = ref<number>();
-const schools = ref<any>([]);
-const currentSelectedSchoolId = ref<any>([]);
+const provinces = ref<any>()
+const selectedProvinceId = ref<number>()
+const citys = ref<any>([])
+const selectedCityId = ref<number>()
+const schools = ref<any>([])
+const currentSelectedSchoolId = ref<any>([])
 
 async function getProvinces() {
   await getProvinceList().then((res: any) => {

@@ -15,11 +15,10 @@ const emits = defineEmits(["checkStudentEvaluation"])
 const students = ref<any>([])
 const isLoading = ref<boolean>(true)
 
-
 function handleChangeSelectedSchoolId(schoolId) {
   selectedSchoolId.value = schoolId
   setTimeout(() => {
-    classSelectionBox.value?.changeGradeId();
+    classSelectionBox.value?.changeGradeId()
   }, 100)
 }
 

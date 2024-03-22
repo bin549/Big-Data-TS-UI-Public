@@ -14,6 +14,7 @@ const frameRef = ref<HTMLElement | null>(null);
 if (unref(currentRoute.meta)?.frameSrc) {
   frameSrc.value = unref(currentRoute.meta)?.frameSrc as string;
 }
+
 unref(currentRoute.meta)?.frameLoading === false && hideLoading();
 
 function hideLoading() {

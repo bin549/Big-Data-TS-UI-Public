@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const emits = defineEmits(["setPageState"])
-import student_card_img from "@/assets/evaluationAnalysis/student-4-2.png";
-import teacher_card_img from "@/assets/evaluationAnalysis/teacher-6.png";
-import type { CardItem } from "@/types/evaluationAnalysis.ts";
+import student_card_img from "@/assets/evaluationAnalysis/student-4-2.png"
+import teacher_card_img from "@/assets/evaluationAnalysis/teacher-6.png"
+import type { CardItem } from "@/types/evaluationAnalysis.ts"
 
-const card_items = ref<Array<CardItem>>([
+const emits = defineEmits(["setPageState"])
+
+const card_items = ref<CardItem[]>([
   {
     title: "学生评价",
     description: "学生评价是指根据一定的标准，通过使用一定的技术和方法，以学生为评价对象所进行的价值判断!",
@@ -20,7 +21,6 @@ const card_items = ref<Array<CardItem>>([
     index: 3
   },
 ])
-
 </script>
 
 <template>
