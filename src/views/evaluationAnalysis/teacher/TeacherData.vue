@@ -3,12 +3,14 @@ import {ref} from "vue"
 import {getTeacherList} from "@/api/base"
 
 import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue"
-import StudentAvatarCard from "@/components/evaluationAnalysis/student/studentEvaluation/StudentAvatarCard.vue"
+import TeacherAvatarCard from "@/components/evaluationAnalysis/teacher/teacherEvaluation/TeacherAvatarCard.vue"
 import BaseSpinner from "@/components/evaluationAnalysis/utils/BaseSpinner.vue"
 
 const selectedSchoolId = ref<number>()
 const isLoading = ref<boolean>(true)
 const teachers = ref<any>([])
+
+const emits = defineEmits(["checkTeacherEvaluation"])
 
 async function handleChangeSelectedSchoolId(schoolId) {
   isLoading.value = true
@@ -16,9 +18,10 @@ async function handleChangeSelectedSchoolId(schoolId) {
   const res = await getTeacherList({
     school_id: schoolId
   })
-  teachers.value = res.data.map(({teacherId, teacherName}: any) => ({
+  teachers.value = res.data.map(({teacherId, teacherName, sex}: any) => ({
     id: teacherId,
     name: teacherName,
+    sex,
   }))
   isLoading.value = false
 }
@@ -26,14 +29,11 @@ async function handleChangeSelectedSchoolId(schoolId) {
 function handleReset() {
 }
 
-
 function handleSetupTerm(gradeId) {
 }
 
-
 function handleChangeSelectedStudentId(studentId) {
 }
-
 </script>
 
 <template>
@@ -48,13 +48,11 @@ function handleChangeSelectedStudentId(studentId) {
       <el-row style="width: 95%; left: 2%;" class="absolute;" v-else>
         <el-col class="flex" :xs="8" :sm="6" :md="4" :lg="3" :xl="1" v-for="(teacher, index) in teachers"
           style=" padding: 5px;">
-          <StudentAvatarCard :sex="'男'" :name="teacher.name" />
+          <TeacherAvatarCard @click="emits('checkTeacherEvaluation')" :sex="teacher.sex" :name="teacher.name" />
         </el-col>
       </el-row>
     </div>
-
   </div>
-
 </template>
 
 <style scoped lang="scss">

@@ -12,6 +12,12 @@ const props = defineProps({
 
 const emits = defineEmits(["setUpTerm", "changeSelectedStudentId"])
 
+defineExpose({
+  changeGradeId,
+  reset,
+});
+
+
 const grades = ref<any>([])
 const selectedClassId = ref<string>("");
 const students = ref<any>([]);
@@ -20,7 +26,6 @@ async function changeGradeId() {
   selectedGradeId.value = grades.value[0].id
   await refresh()
 }
-
 async function refresh() {
   selectedClassId.value = null
   selectedStudentId.value = null
@@ -75,11 +80,6 @@ function reset() {
 onMounted(async () => { 
   await getGrades();
 })
-
-defineExpose({
-  changeGradeId,
-  reset,
-});
 </script>
 
 <template>

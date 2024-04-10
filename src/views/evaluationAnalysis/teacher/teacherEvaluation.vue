@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue";
 import SubjectSelectionBox from "@/components/evaluationAnalysis/common/SubjectSelectionBox.vue";
 import TermSelectionBox from "@/components/evaluationAnalysis/common/TermSelectionBox.vue";

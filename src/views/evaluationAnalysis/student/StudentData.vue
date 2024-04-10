@@ -10,8 +10,9 @@ import StudentAvatarCard from "@/components/evaluationAnalysis/student/studentEv
 type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
 const classSelectionBox = ref<null | classSelectionBoxCtx>(null)
 
-const selectedSchoolId = ref<number>();
 const emits = defineEmits(["checkStudentEvaluation"])
+
+const selectedSchoolId = ref<number>()
 const students = ref<any>([])
 const isLoading = ref<boolean>(true)
 
@@ -43,7 +44,7 @@ async function handleChangeSelectedClassId(classId) {
 }
 
 function checkEvaluationData(index) {
-  emits("checkStudentEvaluation", index)
+  emits("checkStudentEvaluation")
 }
 </script>
 

@@ -23,6 +23,7 @@ export const getSchoolList = (params?: object) => {
     params: params
   });
 };
+
 export const getGradeList = () => {
   return axios({
     url: "/api/grade/list",

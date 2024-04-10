@@ -4,14 +4,15 @@ import {useAppStoreHook} from "@/store/modules/app";
 
 const pureApp = useAppStoreHook();
 import {computed, onMounted, ref} from "vue";
+import BookLoader from "@/components/evaluationAnalysis/utils/BookLoader.vue";
 import StudentEvaluation from "@/views/evaluationAnalysis/student/studentEvaluation.vue";
 import TeacherEvaluation from "@/views/evaluationAnalysis/teacher/teacherEvaluation.vue";
 import TeacherRanking from "@/views/evaluationAnalysis/teacher/teacherRanking.vue";
-import BookLoader from "@/components/evaluationAnalysis/utils/BookLoader.vue";
 import IndexCard from "@/components/evaluationAnalysis/IndexCard.vue";
 import StudentData from "@/views/evaluationAnalysis/student/StudentData.vue";
 import TeacherData from "@/views/evaluationAnalysis/teacher/TeacherData.vue";
 import StudentTable from "@/views/evaluationAnalysis/student/StudentTable.vue";
+import {submodule} from "@/store/modules/evaluationAnalysis.ts";
 
 const isCollapse = computed(() => {
   return !pureApp.getSidebarStatus;
@@ -35,30 +36,16 @@ function setPageState(index) {
   isStudentData.value = false
   isTeacherData.value = false
   isStudentTable.value = false
-  if (index == 1) isIndex.value = true
-  if (index == 2) isStudent.value = true
-  if (index == 3) isTeacher.value = true
-  if (index == 4) isTeacherRank.value = true
-  if (index == 5) isStudentData.value = true
-  if (index == 6) isTeacherData.value = true
-  if (index == 7) isStudentTable.value = true
+  if (index == submodule.index) isIndex.value = true
+  if (index == submodule.student_evaluation) isStudent.value = true
+  if (index == submodule.teacher_evaluation) isTeacher.value = true
+  if (index == submodule.teacher_rank) isTeacherRank.value = true
+  if (index == submodule.student_data) isStudentData.value = true
+  if (index == submodule.teacher_data) isTeacherData.value = true
+  if (index == submodule.student_table) isStudentTable.value = true
   setTimeout(() => {
     isLoading.value = false
   }, 0)
-}
-
-const submodule = {
-  index: 1,
-  student_evaluation: 2,
-  teacher_evaluation: 3,
-  teacher_rank: 4,
-  student_data: 5,
-  teacher_data: 6,
-  student_table: 7
-}
-
-function handleCheckStudentEvaluation() {
-  setPageState(2)
 }
 
 onMounted(() => {
@@ -86,8 +73,8 @@ onMounted(() => {
     <student-evaluation v-if="isStudent"/>
     <teacher-evaluation v-if="isTeacher"/>
     <teacher-ranking v-if="isTeacherRank"/>
-    <student-data @checkStudentEvaluation="handleCheckStudentEvaluation" v-if="isStudentData"/>
-    <teacher-data v-if="isTeacherData"/>
+    <student-data @checkStudentEvaluation="setPageState(submodule.student_evaluation)" v-if="isStudentData"/>
+    <teacher-data @checkTeacherEvalutation="setPageState(submodule.teacher_evaluation)" v-if="isTeacherData"/>
     <student-table v-if="isStudentTable"/>
   </div>
 </template>

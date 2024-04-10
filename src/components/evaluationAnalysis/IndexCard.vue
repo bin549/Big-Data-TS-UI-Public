@@ -3,15 +3,14 @@ import { ref } from "vue";
 
 import student_card_img from "@/assets/evaluationAnalysis/student-4-2.png"
 import teacher_card_img from "@/assets/evaluationAnalysis/teacher-6.png"
-import type { CardItem } from "@/types/evaluationAnalysis.ts"
 
 const emits = defineEmits(["setPageState"])
 
-const card_items = ref<CardItem[]>([
+const card_items = ref([
   {
     title: "学生评价",
     description: "学生评价是指根据一定的标准，通过使用一定的技术和方法，以学生为评价对象所进行的价值判断!",
-    cover_img: student_card_img,
+    cover_img: student_card_img, 
     index: 2
   },
   {

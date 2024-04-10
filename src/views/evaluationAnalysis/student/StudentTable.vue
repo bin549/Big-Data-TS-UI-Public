@@ -11,22 +11,21 @@ import { getStudentEvaluationWeek } from "@/api/base.ts"
 import type { StudentHistory } from "@/types/evaluationAnalysis.ts";
 import StudentTableHistoryDialog from "@/components/evaluationAnalysis/student/studentEvaluation/StudentTableHistoryDialog.vue";
 
+import exportToExcel from "@/utils/exportToExcel.ts";
+import { ElMessage } from "element-plus";
+
 type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
 const classSelectionBox = ref<null | classSelectionBoxCtx>(null)
-
 const selectedSchoolId = ref<number>();
 const terms = ref<WeekOption[]>(weekDatas)
 const selectedTermId = ref<number>(0)
 const weeks = ref<WeekOption[]>(weekDatas)
 const selectedWeekId = ref<number>(0)
-const isRadarDialogVisible = ref<boolean>(false)
+const isRadarDialogVisible = ref<boolean>(false) 
 const isHistoryDialogVisible = ref<boolean>(false)
-import exportToExcel from "@/utils/exportToExcel.ts";
-import { ElMessage } from "element-plus";
 
 const historys = ref<StudentHistory[]>()
 const isLoading = ref<boolean>(true)
-
 const students = ref<StudentRow[]>([])
 
 const chartOption = ref<any>({
@@ -53,7 +52,6 @@ const chartOption = ref<any>({
     }
   ]
 })
-
 
 function disposeChart() {
     echarts.init(document.getElementById("radar-chart")!).dispose();

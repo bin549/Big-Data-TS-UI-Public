@@ -51,3 +51,13 @@ export const weekDatas = [
         name: "第十一周"
     },
 ]
+
+export const submodule = {
+  index: 1,
+  student_evaluation: 2,
+  teacher_evaluation: 3,
+  teacher_rank: 4,
+  student_data: 5,
+  teacher_data: 6,
+  student_table: 7
+}
