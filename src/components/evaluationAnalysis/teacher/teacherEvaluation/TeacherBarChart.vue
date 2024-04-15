@@ -89,6 +89,7 @@ defineExpose({
   disposeChart,
   initChart
 })
+
 onMounted(() => {
   initChart();
 });
@@ -97,8 +98,11 @@ onMounted(() => {
 <template>
   <div style="background-color: #def6ff;" class="b-rounded-2 mt-2 mb-2 bar-chart-card" relative>
     <h4 style="background-color: #c7f4ff; color: white;" font-bold p-3 content-center text-lg text-gray-500>评语统计柱状图</h4>
-    <div style="background-color: #def6ff;" class="bar-chart-render" ref="barChart" id="bar-chart" w-full h-full></div>
-    <el-empty description="无数据" absolute top-20 left-42 v-if="props.selectedStudentEvaluations.length === 0 && !props.isLoading" />
+    <div class="bar-chart-column">
+      <div style="background-color: #def6ff;" class="bar-chart-render" ref="barChart" id="bar-chart" w-full h-full></div>
+    </div>
+    <el-empty description="无数据" absolute top-20 left-42
+      v-if="props.selectedStudentEvaluations.length === 0 && !props.isLoading" />
   </div>
 </template>
 
@@ -107,31 +111,34 @@ onMounted(() => {
   display: none;
 }
 
-
 .bar-chart-card {
   height: 400px;
 }
 
 .bar-chart-render {
+  height: 2300px;
+}
+
+.bar-chart-column {
   height: 300px;
   overflow-x: hidden;
   overflow-y: scroll;
   width: 100%;
 }
 
-.bar-chart-render::-webkit-scrollbar {
+.bar-chart-column::-webkit-scrollbar {
   width: 10px;
 }
 
-.bar-chart-render::-webkit-scrollbar-track {
+.bar-chart-column::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
 
-.bar-chart-render::-webkit-scrollbar-thumb {
+.bar-chart-column::-webkit-scrollbar-thumb {
   background-color: #888;
 }
 
-.bar-chart-render::-webkit-scrollbar-thumb:hover {
+.bar-chart-column::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
 </style>

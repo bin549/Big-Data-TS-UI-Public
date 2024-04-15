@@ -28,9 +28,11 @@ const weeks = ref<WeekOption[]>(weekDatas)
 const selectedWeekId = ref<number>(0)
 const isRadarDialogVisible = ref<boolean>(false)
 const isHistoryDialogVisible = ref<boolean>(false)
+const emits = defineEmits(["checkStudentEvaluation"])
+
 
 const terms = ref<any>([]);
-const historys = ref<StudentHistory[]>()
+const historys = ref<StudentHistory[]>() 
 const isLoading = ref<boolean>(true)
 const students = ref<StudentRow[]>([])
 const selectedClassId = ref<string>("")
@@ -242,6 +244,10 @@ async function getSubjects() {
     }, {});
 }
 
+function checkEvaluationData() {
+  emits("checkStudentEvaluation")
+}
+
 onMounted(async () => {
     getTerms()
 })
@@ -302,9 +308,9 @@ onMounted(async () => {
                             @click="showHistoryChart(scope.$index)" style="font-size: 20px;">⛄︎</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column label="评价指南" width="130">
+                <el-table-column label="评价指南" width="130"> 
                     <template #default="scope">
-                        <el-button @click="ElMessage.info('跳转不了!哈哈哈!')" style="font-size: 20px;">✂︎</el-button>
+                        <el-button @click="checkEvaluationData" style="font-size: 20px;">✂︎</el-button>
                     </template>
                 </el-table-column>
             </el-table>

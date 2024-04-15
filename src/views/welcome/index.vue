@@ -34,7 +34,7 @@ function setPageState(index) {
   isIndex.value = false
   isStudent.value = false
   isTeacher.value = false
-  isTeacherRank.value = false
+  isTeacherRank.value = false 
   isStudentData.value = false
   isTeacherData.value = false
   isStudentTable.value = false
@@ -77,9 +77,9 @@ onMounted(() => {
     <teacher-evaluation v-if="isTeacher" />
     <teacher-ranking v-if="isTeacherRank" />
     <student-data @checkStudentEvaluation="setPageState(submodule.student_evaluation)" v-if="isStudentData" />
-    <teacher-data @checkTeacherEvalutation="setPageState(submodule.teacher_evaluation)" v-if="isTeacherData" />
-    <student-table v-if="isStudentTable" />
+    <teacher-data @checkTeacherEvaluation="setPageState(submodule.teacher_evaluation)" v-if="isTeacherData" />
+    <student-table @checkStudentEvaluation="setPageState(submodule.teacher_evaluation)"  v-if="isStudentTable" />
   </div>
 </template>
-
+ 
 <style scoped lang="scss"></style>

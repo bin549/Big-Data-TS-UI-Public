@@ -1,6 +1,17 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import * as echarts from "echarts";
+
+const props = defineProps({
+  xData: Array<any>,
+  yData: Array<any>,
+})
+
+const mXData = ref<any>(['元卜顾', '萧尹姚', '邵湛汪', '狄米贝', '董祝梁', '项杜阮', '贾路娄', '柯昝管', '胡凌霍', '房裘缪', '应宗丁', '虞万支', '解宣贲', '杭洪包', '裴陆荣'])
+const mYData = ref<Array<number>>([18203, 23489, 29034, 104970, 131744, 630230, 104970, 131744, 23489, 29034, 104970, 131744, 630230, 104970, 131744])
+
+
+const barChart = ref<any>(null)
 
 var option = {
   tooltip: {
@@ -11,7 +22,7 @@ var option = {
   },
   legend: {},
   grid: {
-    left: '3%',
+    left: '3%', 
     right: '4%',
     bottom: '3%',
     containLabel: true
@@ -22,7 +33,7 @@ var option = {
   },
   yAxis: {
     type: 'category',
-    data: ['元卜顾', '萧尹姚', '邵湛汪', '狄米贝', '董祝梁', '项杜阮', '贾路娄', '柯昝管', '胡凌霍', '房裘缪', '应宗丁', '虞万支', '解宣贲', '杭洪包', '裴陆荣']
+    data: mXData.value
   },
   series: [
     {
@@ -32,7 +43,7 @@ var option = {
         borderRadius: 30
       },
       type: 'bar',
-      data: [18203, 23489, 29034, 104970, 131744, 630230, 104970, 131744, 23489, 29034, 104970, 131744, 630230, 104970, 131744],
+      data: mYData.value,
       itemStyle: {
         normal: {
           color: function (params) {
@@ -51,11 +62,29 @@ var option = {
   ]
 };
 
-function initChart() {
-  var chartDom = document.getElementById('bar-chart')!
-  var myChart = echarts.init(chartDom)
-  option && myChart.setOption(option)
+function disposeChart() {
+  mXData.value.splice(0, mXData.value.length)
+  mYData.value.splice(0, mYData.value.length)
+  barChart.value.classList.add("chart-hide")
+  echarts.init(document.getElementById("bar-chart")!).dispose()
 }
+
+function initChart() {
+  barChart.value.classList.remove("chart-hide")
+  for (let i = 0; i < props.xData.length; i++) {
+    mXData.value[i] = props.xData[i]
+    mYData.value[i] = props.yData[i]
+  }
+  const chartDom = document.getElementById('bar-chart')!
+  const myChart = echarts.init(chartDom);
+  option && myChart.setOption(option);
+}
+
+defineExpose({
+  disposeChart,
+  initChart
+})
+
 
 onMounted(() => {
   initChart()
@@ -66,11 +95,47 @@ onMounted(() => {
   <div b-rounded-2 h-200 flex flex-col style="background-color: #def6ff;">
     <div b-rounded-2 style="height: 100%">
       <h4 bg-white font-bold pl-3 content-center text-lg text-gray-500 mt-4 p-4>评价数量</h4>
-      <div id="bar-chart" w-full h-full></div>
+      <div class="bar-chart-column">
+        <div ref="barChart" id="bar-chart" class="bar-chart-render" w-full h-full></div>
+      </div>
     </div>
-  </div>
+  </div>``
 </template>
 
 <style scoped lang="scss">
 
+.chart-hide 
+{
+  display: none;
+}
+
+.bar-chart-card {
+  height: 400px;
+}
+
+.bar-chart-render {
+  height: 2400px;
+}
+
+.bar-chart-column {
+  height: 600px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+}
+.bar-chart-column::-webkit-scrollbar {
+  width: 10px;
+}
+
+.bar-chart-column::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.bar-chart-column::-webkit-scrollbar-thumb {
+  background-color: #888;
+}
+
+.bar-chart-column::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
 </style>
