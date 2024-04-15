@@ -94,3 +94,11 @@ export const getStudentEvaluationWeek = (params?: object) => {
     params: params
   });
 };
+
+export const getCoinList = (params?: object) => {
+  return axios({
+    url: "/api/coin/list",
+    methos: "get",
+    params: params
+  });
+};

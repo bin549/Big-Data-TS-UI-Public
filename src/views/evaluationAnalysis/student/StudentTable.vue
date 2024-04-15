@@ -17,7 +17,7 @@ import exportToExcel from "@/utils/exportToExcel.ts";
 import { ElMessage } from "element-plus";
 import evaluationAnalysis from "@/router/modules/evaluationAnalysis";
 import { getTeacherList } from "@/api/base"
-import { getSubjectList } from "@/api/base.ts";
+import { getSubjectList, getCoinList } from "@/api/base.ts";
 
 
 type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
@@ -37,25 +37,25 @@ const selectedClassId = ref<string>("")
 const totalScore = ref<number>(0)
 const teacherMap = ref<any>()
 const subjectMap = ref<any>()
-    
+const coinMap = ref<any>([])
+const subjectCoinMap = ref<any>({})
+const subjects = ref<any>([])
+
+const chartIndicators = ref<any>([])
+const chartData = ref<any>([])
+
 const chartOption = ref<any>({
     color: ['rgb(92, 255, 255)'],
     radar: {
         // shape: 'circle',
-        indicator: [
-            { name: '学业', max: 6500 },
-            { name: '审美', max: 16000 },
-            { name: '劳动与实践', max: 30000 },
-            { name: '身心', max: 38000 },
-            { name: '品德', max: 52000 }
-        ]
+        indicator: chartIndicators.value
     },
     series: [
         {
             type: 'radar',
             data: [
                 {
-                    value: [4200, 3000, 20000, 35000, 50000],
+                    value: chartData.value,
                     name: 'Allocated Budget'
                 }
             ]
@@ -92,6 +92,42 @@ async function handleChangeSelectedClassId(classId) {
 
 function showRadarChart(index: number) {
     isRadarDialogVisible.value = true
+    const currentStudentEvaluations = currentClassEvaluations.value.filter(evaluation => evaluation.student_id === students.value[index].id)
+    const scoreBySubjectId = currentStudentEvaluations
+        .reduce((acc, obj) => {
+            if (acc[subjectCoinMap.value[obj.subject_id]]) {
+                acc[subjectCoinMap.value[obj.subject_id]] += obj.score;
+            } else {
+                acc[subjectCoinMap.value[obj.subject_id]] = obj.score;
+            }
+            return acc;
+        }, {});
+    console.log(scoreBySubjectId)
+    chartData.value.splice(0, chartData.value.length)
+    for (let i = 0; i < 5; i++) {
+        chartData.value.push(i)
+    }
+    for (let i = 0; i < chartIndicators.value.length; i++) {
+        const coinIdx = coinMap.value[chartIndicators.value[i].name]
+        const coinVal = scoreBySubjectId[coinIdx]
+        if (coinVal) {
+            chartData.value[i] = coinVal
+        }
+    }
+    console.log(chartData.value)
+    const maxValue = Math.max(...chartData.value);
+    const minValue = Math.min(...chartData.value);
+    const normalizedData = chartData.value.map(value => (value - minValue) / (maxValue - minValue));
+    const scaledData = normalizedData.map(value => Math.round(value * 100));
+    chartData.value.splice(0, chartData.value.length)
+    for (let i = 0; i < 5; i++) {
+        chartData.value.push(i)
+    }
+    console.log(scaledData)
+    for (let i = 0; i < 5; i++) {
+        chartData.value[i] = scaledData[i]
+    }
+    console.log(chartData.value)
     setTimeout(() => {
         disposeChart()
         initChart()
@@ -99,9 +135,7 @@ function showRadarChart(index: number) {
 }
 
 async function showHistoryChart(index: number) {
-    console.log(isHistoryDialogVisible.value)
     isHistoryDialogVisible.value = true
-    console.log(currentClassEvaluations.value)
     historys.value = currentClassEvaluations.value.filter(evaluation => evaluation.student_id === students.value[index].id).map(({ id, content, score, student_id, teacher_id, subject_id, week }: any) => ({
         name: students.value.find(student => student.id === student_id).name,
         content: content,
@@ -118,7 +152,8 @@ function handleReset() {
 function handleChangeSelectedSchoolId(schoolId) {
     selectedSchoolId.value = schoolId
     getTeachers()
-    getSubjects() 
+    getSubjects()
+    getCoins()
     setTimeout(() => {
         classSelectionBox.value?.changeGradeId();
     }, 100)
@@ -152,6 +187,8 @@ function changeWeek() {
 }
 
 async function getStudents() {
+    const min = 1;
+    const max = 3;
     await getStudentList({
         class_id: selectedClassId.value
     }).then((res: any) => {
@@ -161,8 +198,8 @@ async function getStudents() {
             scoreAvg: Math.round(totalScore.value / res.data.length * 10) / 10,
             scoreTotal: totalScore.value,
             scoreWeek: currentClassEvaluations.value.filter(evaluation => evaluation.student_id === id).reduce((acc, curr) => acc + curr.score, 0),
-            starWeek: 20,
-            starProgress: 20,
+            starWeek: Math.floor(Math.random() * (max - min + 1)) + min,
+            starProgress: Math.floor(Math.random() * (max - min + 1)) + min,
         }))
     })
 }
@@ -182,15 +219,31 @@ async function getTeachers() {
 }
 
 
+async function getCoins() {
+    const res = await getCoinList({
+        school_id: selectedSchoolId.value
+    })
+    chartIndicators.value.splice(0, chartIndicators.value.length)
+    res.data.forEach(coin => {
+        chartIndicators.value.push({
+            name: coin.name, max: 100
+        })
+        coinMap.value[coin.name] = coin.id
+    });
+}
+
 async function getSubjects() {
     const res = await getSubjectList({
         school_id: selectedSchoolId.value
     })
-    subjectMap.value = res.data.map(({ id, subject }: any) => ({
+    subjects.value = res.data.map(({ id, subject, coin_id }: any) => ({
         id: id,
         name: subject,
-    })).reduce((acc, obj) => {
+        coin_id: coin_id,
+    }))
+    subjectMap.value = subjects.value.reduce((acc, obj) => {
         acc[obj.id] = obj.name;
+        subjectCoinMap.value[obj.id] = obj.coin_id
         return acc;
     }, {});
 }
@@ -240,12 +293,13 @@ onMounted(async () => {
                 <el-table-column prop="name" label="姓名" width="130" />
                 <el-table-column prop="scoreAvg" label="班总平均分" width="130" sortable />
                 <el-table-column prop="scoreTotal" label="总得分" width="130" sortable />
-                <el-table-column prop="scoreWeek" label="本周得分" width="130" sortable />
+                <el-table-column prop="scoreWeek" label="当前得分" width="130" sortable />
                 <el-table-column prop="starWeek" label="每周之星" width="130" sortable />
                 <el-table-column prop="starProgress" label="超越之星" width="130" sortable />
                 <el-table-column label="雷达图" width="130">
                     <template #default="scope">
-                        <el-button @click="showRadarChart(scope.$index)" style="font-size: 20px;">✡︎</el-button>
+                        <el-button :disabled="students[scope.$index].scoreWeek === 0" @click="showRadarChart(scope.$index)"
+                            style="font-size: 20px;">✡︎</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="评价详情" width="130">
