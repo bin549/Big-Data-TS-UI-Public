@@ -102,7 +102,6 @@ function showRadarChart(index: number) {
             }
             return acc;
         }, {});
-    console.log(scoreBySubjectId)
     chartData.value.splice(0, chartData.value.length)
     for (let i = 0; i < 5; i++) {
         chartData.value.push(i)
@@ -110,11 +109,8 @@ function showRadarChart(index: number) {
     for (let i = 0; i < chartIndicators.value.length; i++) {
         const coinIdx = coinMap.value[chartIndicators.value[i].name]
         const coinVal = scoreBySubjectId[coinIdx]
-        if (coinVal) {
-            chartData.value[i] = coinVal
-        }
+        chartData.value[i] = coinVal ? coinVal : 0
     }
-    console.log(chartData.value)
     const maxValue = Math.max(...chartData.value);
     const minValue = Math.min(...chartData.value);
     const normalizedData = chartData.value.map(value => (value - minValue) / (maxValue - minValue));
@@ -123,11 +119,9 @@ function showRadarChart(index: number) {
     for (let i = 0; i < 5; i++) {
         chartData.value.push(i)
     }
-    console.log(scaledData)
     for (let i = 0; i < 5; i++) {
         chartData.value[i] = scaledData[i]
     }
-    console.log(chartData.value)
     setTimeout(() => {
         disposeChart()
         initChart()
