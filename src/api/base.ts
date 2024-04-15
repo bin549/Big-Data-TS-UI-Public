@@ -101,4 +101,4 @@ export const getCoinList = (params?: object) => {
     methos: "get",
     params: params
   });
-};
+}
