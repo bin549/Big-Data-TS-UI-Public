@@ -16,6 +16,8 @@ import { getTermList } from "@/api/base.ts";
 import exportToExcel from "@/utils/exportToExcel.ts";
 import { ElMessage } from "element-plus";
 import evaluationAnalysis from "@/router/modules/evaluationAnalysis";
+import { getTeacherList } from "@/api/base"
+import { getSubjectList } from "@/api/base.ts";
 
 
 type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
@@ -33,7 +35,9 @@ const isLoading = ref<boolean>(true)
 const students = ref<StudentRow[]>([])
 const selectedClassId = ref<string>("")
 const totalScore = ref<number>(0)
-
+const teacherMap = ref<any>()
+const subjectMap = ref<any>()
+    
 const chartOption = ref<any>({
     color: ['rgb(92, 255, 255)'],
     radar: {
@@ -97,14 +101,15 @@ function showRadarChart(index: number) {
 async function showHistoryChart(index: number) {
     console.log(isHistoryDialogVisible.value)
     isHistoryDialogVisible.value = true
-    historys.value = currentClassEvaluations.value.filter(evaluation => evaluation.student_id === students.value[index].id).map(({ id, content, score, subject_id }: any) => ({
-        id: id,
-        content: content,
-        score: score,
-        subjectId: subject_id,
-    }))
     console.log(currentClassEvaluations.value)
-    console.log(historys.value)
+    historys.value = currentClassEvaluations.value.filter(evaluation => evaluation.student_id === students.value[index].id).map(({ id, content, score, student_id, teacher_id, subject_id, week }: any) => ({
+        name: students.value.find(student => student.id === student_id).name,
+        content: content,
+        score: `${score}分`,
+        teacher: teacherMap.value[teacher_id],
+        subject: subjectMap.value[subject_id],
+        week: `第${week}周`,
+    }))
 }
 
 function handleReset() {
@@ -112,6 +117,8 @@ function handleReset() {
 
 function handleChangeSelectedSchoolId(schoolId) {
     selectedSchoolId.value = schoolId
+    getTeachers()
+    getSubjects() 
     setTimeout(() => {
         classSelectionBox.value?.changeGradeId();
     }, 100)
@@ -160,7 +167,35 @@ async function getStudents() {
     })
 }
 
-onMounted(() => {
+
+async function getTeachers() {
+    const res = await getTeacherList({
+        school_id: selectedSchoolId.value
+    })
+    teacherMap.value = res.data.map(({ teacherId, teacherName, sex }: any) => ({
+        id: teacherId,
+        name: teacherName,
+    })).reduce((acc, obj) => {
+        acc[obj.id] = obj.name;
+        return acc;
+    }, {});
+}
+
+
+async function getSubjects() {
+    const res = await getSubjectList({
+        school_id: selectedSchoolId.value
+    })
+    subjectMap.value = res.data.map(({ id, subject }: any) => ({
+        id: id,
+        name: subject,
+    })).reduce((acc, obj) => {
+        acc[obj.id] = obj.name;
+        return acc;
+    }, {});
+}
+
+onMounted(async () => {
     getTerms()
 })
 </script>
@@ -215,7 +250,8 @@ onMounted(() => {
                 </el-table-column>
                 <el-table-column label="评价详情" width="130">
                     <template #default="scope">
-                        <el-button :disabled="students[scope.$index].scoreWeek === 0" @click="showHistoryChart(scope.$index)" style="font-size: 20px;">⛄︎</el-button>
+                        <el-button :disabled="students[scope.$index].scoreWeek === 0"
+                            @click="showHistoryChart(scope.$index)" style="font-size: 20px;">⛄︎</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="评价指南" width="130">
