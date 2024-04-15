@@ -10,7 +10,7 @@ export default {
       path: "/evaluationAnalysis/evaluationOverview",
       name: "evaluationOverview",
       component: () =>
-        import("@/views/evaluationAnalysis/index.vue"),
+        import("@/views/welcome/index.vue"),
       meta: {
         title: "模块首页"
       }
