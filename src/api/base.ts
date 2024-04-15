@@ -78,6 +78,14 @@ export const getStudentEvaluation = (params?: object) => {
   });
 };
 
+export const getClassEvaluation = (params?: object) => {
+  return axios({
+    url: "/api/student_evaluation/list_class",
+    methos: "get",
+    params: params
+  });
+};
+
 
 export const getStudentEvaluationWeek = (params?: object) => {
   return axios({
