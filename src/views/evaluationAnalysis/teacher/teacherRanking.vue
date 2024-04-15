@@ -13,6 +13,9 @@ const selectedSubjects = ref<any>([1, 2]);
 type termSelectionBoxCtx = InstanceType<typeof TermSelectionBox>
 const termSelectionBox = ref<null | termSelectionBoxCtx>(null)
 
+type teacherRankingBarChartCtx = InstanceType<typeof TeacherRankingBarChart>
+const teacherRankingBarChart = ref<null | teacherRankingBarChartCtx>(null)
+
 function handleChangeSelectedTerms(terms) {
   selectedTerms.value = terms
 }
@@ -50,7 +53,7 @@ function handleChangeSelectedSchoolId(schoolId) {
         <el-col :lg="1">
         </el-col>
         <el-col :xs="24" :lg="11" :xl="8">
-          <teacherRankingBarChart/>
+          <teacherRankingBarChart ref="teacherRankingBarChart"/>
         </el-col>
       </el-row>
     </div>

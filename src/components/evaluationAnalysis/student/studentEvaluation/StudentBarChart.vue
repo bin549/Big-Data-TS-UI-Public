@@ -87,7 +87,7 @@ defineExpose({
   initChart
 })
 </script>
-
+ 
 <template>
   <div style="background-color: #def6ff;" class="b-rounded-2 mt-2 mb-2 h-440 bar-chart-card" v-loading="props.isLoading">
     <h4 style="background-color: #c7f4ff;  color: white;" class="font-bold p-3 content-center text-lg text-gray-500">

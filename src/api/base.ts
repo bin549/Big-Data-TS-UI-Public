@@ -78,6 +78,15 @@ export const getStudentEvaluation = (params?: object) => {
   });
 };
 
+
+export const getTeacherEvaluation = (params?: object) => {
+  return axios({
+    url: "/api/student_evaluation/list_teacher",
+    methos: "get",
+    params: params
+  });
+};
+
 export const getClassEvaluation = (params?: object) => {
   return axios({
     url: "/api/student_evaluation/list_class",

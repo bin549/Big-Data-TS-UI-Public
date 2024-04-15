@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSelectionBox.vue";
 import StudentSelectionBox from "@/components/evaluationAnalysis/student/studentEvaluation/StudentSelectionBox.vue";
 import TermSelectionBox from "@/components/evaluationAnalysis/common/TermSelectionBox.vue";
 import SubjectSelectionBox from "@/components/evaluationAnalysis/common/SubjectSelectionBox.vue";
 import StudentStatisticsChart from "@/components/evaluationAnalysis/student/studentEvaluation/StudentStatisticsChart.vue";
 import StudentBarChart from "@/components/evaluationAnalysis/student/studentEvaluation/StudentBarChart.vue";
-import { getStudentEvaluation } from "@/api/base.ts"
 import { ElMessage } from "element-plus";
 import type { StudentEvaluation } from "@/types/evaluationAnalysis.ts";
+import Cookies from "js-cookie";
+import { getStudentEvaluation } from "@/api/base.ts"
 
 const selectedSchoolId = ref<number>();
 const selectedStudentId = ref<string>("");
@@ -91,6 +92,13 @@ async function fetchData() {
 function handleSetupTerm(gradeId) {
   termSelectionBox.value?.setupTerms(gradeId);
 }
+
+onMounted(() => {
+  if (Cookies.get("isAction")) {
+    console.log(Cookies.get("schoolId"))
+    console.log(Cookies.get("studentId"))
+  }
+})
 </script>
 
 <template>

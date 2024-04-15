@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {router} from "@/router"
-import {useAppStoreHook} from "@/store/modules/app";
+import { router } from "@/router"
+import { useAppStoreHook } from "@/store/modules/app";
 
 const pureApp = useAppStoreHook();
-import {computed, onMounted, ref} from "vue";
+import { computed, onMounted, ref } from "vue";
 import BookLoader from "@/components/evaluationAnalysis/utils/BookLoader.vue";
 import StudentEvaluation from "@/views/evaluationAnalysis/student/studentEvaluation.vue";
 import TeacherEvaluation from "@/views/evaluationAnalysis/teacher/teacherEvaluation.vue";
@@ -12,7 +12,8 @@ import IndexCard from "@/components/evaluationAnalysis/IndexCard.vue";
 import StudentData from "@/views/evaluationAnalysis/student/StudentData.vue";
 import TeacherData from "@/views/evaluationAnalysis/teacher/TeacherData.vue";
 import StudentTable from "@/views/evaluationAnalysis/student/StudentTable.vue";
-import {submodule} from "@/store/modules/evaluationAnalysis.ts";
+import { submodule } from "@/store/modules/evaluationAnalysis.ts";
+import Cookies from "js-cookie";
 
 const isCollapse = computed(() => {
   return !pureApp.getSidebarStatus;
@@ -28,6 +29,7 @@ const isTeacherData = ref<boolean>(false)
 const isStudentTable = ref<boolean>(false)
 
 function setPageState(index) {
+  // Cookies.set("isAction", "0")
   isLoading.value = true
   isIndex.value = false
   isStudent.value = false
@@ -66,18 +68,18 @@ onMounted(() => {
       <el-button @click="setPageState(submodule.teacher_rank)" v-if="isTeacher">教师排行</el-button>
       <el-button @click="setPageState(submodule.student_data)" v-if="isStudent">学生检索</el-button>
       <el-button @click="setPageState(submodule.teacher_data)" v-if="isTeacher || isTeacherRank">教师检索</el-button>
-      <el-button @click="setPageState(submodule.student_evaluation)" v-if="isStudentData || isStudentTable">学生评价</el-button>
+      <el-button @click="setPageState(submodule.student_evaluation)"
+        v-if="isStudentData || isStudentTable">学生评价</el-button>
       <el-button @click="setPageState(submodule.student_table)" v-if="isStudent">学生统计</el-button>
     </div>
-    <index-card v-if="isIndex" @setPageState="setPageState"/>
-    <student-evaluation v-if="isStudent"/>
-    <teacher-evaluation v-if="isTeacher"/>
-    <teacher-ranking v-if="isTeacherRank"/>
-    <student-data @checkStudentEvaluation="setPageState(submodule.student_evaluation)" v-if="isStudentData"/>
-    <teacher-data @checkTeacherEvalutation="setPageState(submodule.teacher_evaluation)" v-if="isTeacherData"/>
-    <student-table v-if="isStudentTable"/>
+    <index-card v-if="isIndex" @setPageState="setPageState" />
+    <student-evaluation ref="studentEvaluationPage" v-if="isStudent" />
+    <teacher-evaluation v-if="isTeacher" />
+    <teacher-ranking v-if="isTeacherRank" />
+    <student-data @checkStudentEvaluation="setPageState(submodule.student_evaluation)" v-if="isStudentData" />
+    <teacher-data @checkTeacherEvalutation="setPageState(submodule.teacher_evaluation)" v-if="isTeacherData" />
+    <student-table v-if="isStudentTable" />
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

@@ -18,7 +18,10 @@ async function getTeachers() {
     name: teacherName,
   }))
   selectedTeacherId.value = teachers.value[0].id
+  emits("changeSelectedTeacherId", selectedTeacherId.value)
 }
+
+const emits = defineEmits(["changeSelectedTeacherId"])
 
 defineExpose({
   getTeachers,
@@ -32,7 +35,7 @@ defineExpose({
       <el-col style="background-color: #def6ff" :xs="6" :lg="6" :xl="6">
         <el-form>
           <el-form-item label-width="100px" label="教师:">
-            <el-select v-model="selectedTeacherId" placeholder="请选择教师">
+            <el-select @change="emits('changeSelectedTeacherId', selectedTeacherId)" v-model="selectedTeacherId" placeholder="请选择教师">
               <el-option v-for="teacher in teachers" :key="teacher.id" :label="teacher.name" :value="teacher.id" />
             </el-select>
           </el-form-item>

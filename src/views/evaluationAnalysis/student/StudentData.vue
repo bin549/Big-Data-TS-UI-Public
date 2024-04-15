@@ -6,6 +6,7 @@ import SchoolSelectionBox from "@/components/evaluationAnalysis/common/SchoolSel
 import ClassSelectionBox from "@/components/evaluationAnalysis/common/ClassSelectionBox.vue";
 import BaseSpinner from "@/components/evaluationAnalysis/utils/BaseSpinner.vue";
 import StudentAvatarCard from "@/components/evaluationAnalysis/student/studentEvaluation/StudentAvatarCard.vue";
+import Cookies from "js-cookie";
 
 type classSelectionBoxCtx = InstanceType<typeof ClassSelectionBox>
 const classSelectionBox = ref<null | classSelectionBoxCtx>(null)
@@ -43,7 +44,10 @@ async function handleChangeSelectedClassId(classId) {
   isLoading.value = false
 }
 
-function checkEvaluationData(index) {
+function checkEvaluationData(studentId: string) {
+  Cookies.set("isAction", "1");
+  Cookies.set("studentId", studentId);
+  Cookies.set("schoolId", String(selectedSchoolId));
   emits("checkStudentEvaluation")
 }
 </script>
@@ -62,9 +66,9 @@ function checkEvaluationData(index) {
       <BaseSpinner v-if="isLoading"/>
       <el-row style="width: 95%; left: 2%;" class="absolute;" v-else>
         <el-col class="flex" :xs="8" :sm="6" :md="4" :lg="3" :xl="1" v-for="(student, index) in students"
-          style="padding: 5px;"
-          @click="checkEvaluationData(index)">
-          <StudentAvatarCard :sex="student.sex" :name="student.name" />
+          style="padding: 5px;">
+          <StudentAvatarCard :sex="student.sex" :name="student.name" 
+          @click="checkEvaluationData(student.id)"/>
         </el-col>
       </el-row>
     </div>
