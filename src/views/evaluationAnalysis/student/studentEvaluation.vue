@@ -25,6 +25,7 @@ type studentStatisticsChartCtx = InstanceType<typeof StudentStatisticsChart>
 const studentStatisticsChart = ref<null | studentStatisticsChartCtx>(null)
 type studentBarChartCtx = InstanceType<typeof StudentBarChart>
 const studentBarChart = ref<null | studentBarChartCtx>(null)
+const isLoading = ref<boolean>(false)
 
 function handleChangeSelectedSchoolId(schoolId) {
   selectedSchoolId.value = schoolId
@@ -67,6 +68,7 @@ async function fetchData() {
     ElMessage.warning("请先选择评语科目！")
     return
   }
+  isLoading.value = true;
   const res = await getStudentEvaluation({
     student_id: selectedStudentId.value,
     subject_ids: selectedSubjects.value.toString(),
@@ -81,6 +83,9 @@ async function fetchData() {
     studentStatisticsChart.value?.fetchData()
     studentBarChart.value?.initChart()
   }, 300)
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 200)
 }
 
 function handleSetupTerm(gradeId) {
@@ -114,7 +119,8 @@ function handleSetupTerm(gradeId) {
             <StudentStatisticsChart ref="studentStatisticsChart"
               :selectedStudentEvaluations="selectedStudentEvaluations" />
             <el-divider />
-            <StudentBarChart ref="studentBarChart" :selectedStudentEvaluations="selectedStudentEvaluations" />
+            <StudentBarChart :isLoading="isLoading" ref="studentBarChart"
+              :selectedStudentEvaluations="selectedStudentEvaluations" />
           </div>
         </el-col>
       </el-row>

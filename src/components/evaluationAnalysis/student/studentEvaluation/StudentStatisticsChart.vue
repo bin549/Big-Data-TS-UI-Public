@@ -44,7 +44,7 @@ defineExpose({
           </div>
         </el-col>
         <el-col :span="8" b-white b-1>
-          <div class="grid-content ep-bg-purple-light color-green font-bold">
+          <div class="grid-content ep-bg-purple-light color-black font-bold">
             {{ props.selectedStudentEvaluations.length }}
           </div>
         </el-col>
@@ -85,7 +85,7 @@ defineExpose({
         </el-col>
         <el-col :span="8" b-white b-1>
           <div content-center style="font-size: 14px;">
-            <p class="c-green font-bold" v-for="(evalutaion, index) in topEvaluations">
+            <p class="c-black font-bold" v-for="(evalutaion, index) in topEvaluations">
              {{index+1}}. {{ evalutaion }}
             </p>
             <p class="c-red" v-if="topEvaluations.length === 0">无数据</p>

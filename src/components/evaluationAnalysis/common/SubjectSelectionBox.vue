@@ -64,4 +64,8 @@ defineExpose({
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+::v-deep .el-checkbox__input.is-checked+.el-checkbox__label {
+  color: black;
+}
+</style>
