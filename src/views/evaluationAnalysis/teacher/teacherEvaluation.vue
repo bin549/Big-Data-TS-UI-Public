@@ -7,6 +7,8 @@ import TeacherSelectionBox from "@/components/evaluationAnalysis/teacher/teacher
 import TeacherStatisticsChart from "@/components/evaluationAnalysis/teacher/teacherEvaluation/TeacherStatisticsChart.vue";
 import TeacherBarChart from "@/components/evaluationAnalysis/teacher/teacherEvaluation/TeacherBarChart.vue";
 import { getTeacherEvaluation } from "@/api/base.ts"
+import { getSchoolEvaluation } from "@/api/base.ts"
+
 import { ElMessage } from "element-plus";
 const selectedSchoolId = ref<number>();
 const selectedTeacherId = ref<number>();
@@ -84,7 +86,6 @@ async function fetchData() {
     isLoading.value = false;
   }, 200)
 }
-
 </script>
 
 <template>

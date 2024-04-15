@@ -181,8 +181,8 @@ function changeWeek() {
 }
 
 async function getStudents() {
-    const min = 1;
-    const max = 3;
+    const min = 0;
+    const max = 4;
     await getStudentList({
         class_id: selectedClassId.value
     }).then((res: any) => {
